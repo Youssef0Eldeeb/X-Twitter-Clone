@@ -16,6 +16,7 @@
 		A1B5920F2AFF884F00FC8330 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5920E2AFF884F00FC8330 /* SearchViewController.swift */; };
 		A1B592112AFF885800FC8330 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B592102AFF885800FC8330 /* NotificationViewController.swift */; };
 		A1B592132AFF888300FC8330 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B592122AFF888300FC8330 /* MessagesViewController.swift */; };
+		A1B592162AFFA16300FC8330 /* TweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B592152AFFA16300FC8330 /* TweetTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		A1B5920E2AFF884F00FC8330 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		A1B592102AFF885800FC8330 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		A1B592122AFF888300FC8330 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		A1B592152AFFA16300FC8330 /* TweetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +64,8 @@
 		A1B591F32AFF844A00FC8330 /* TwitterClone */ = {
 			isa = PBXGroup;
 			children = (
-				A1B5920B2AFF870C00FC8330 /* Views */,
+				A1B592142AFFA13600FC8330 /* Views */,
+				A1B5920B2AFF870C00FC8330 /* Controllers */,
 				A1B591F42AFF844A00FC8330 /* AppDelegate.swift */,
 				A1B591F62AFF844A00FC8330 /* SceneDelegate.swift */,
 				A1B591FD2AFF844E00FC8330 /* Assets.xcassets */,
@@ -72,7 +75,7 @@
 			path = TwitterClone;
 			sourceTree = "<group>";
 		};
-		A1B5920B2AFF870C00FC8330 /* Views */ = {
+		A1B5920B2AFF870C00FC8330 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				A1B592082AFF864400FC8330 /* MainTabbarViewController.swift */,
@@ -80,6 +83,14 @@
 				A1B5920E2AFF884F00FC8330 /* SearchViewController.swift */,
 				A1B592102AFF885800FC8330 /* NotificationViewController.swift */,
 				A1B592122AFF888300FC8330 /* MessagesViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		A1B592142AFFA13600FC8330 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A1B592152AFFA16300FC8330 /* TweetTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -161,6 +172,7 @@
 				A1B591F52AFF844A00FC8330 /* AppDelegate.swift in Sources */,
 				A1B591F72AFF844A00FC8330 /* SceneDelegate.swift in Sources */,
 				A1B5920D2AFF884500FC8330 /* HomeViewController.swift in Sources */,
+				A1B592162AFFA16300FC8330 /* TweetTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
