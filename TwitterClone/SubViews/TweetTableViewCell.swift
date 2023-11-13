@@ -22,7 +22,7 @@ class TweetTableViewCell: UITableViewCell {
     
     weak var delegate: TweetTableViewCellDelegate?
     
-    private let actionSpacing: CGFloat = 60
+    private let actionSpacing: CGFloat = 55
     
     //UI Components
     private let avatarImageView: UIImageView = {
@@ -142,12 +142,12 @@ class TweetTableViewCell: UITableViewCell {
         let textContentLabelConstraints = [
             textContentlabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
             textContentlabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 10),
-            textContentlabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15)
+            textContentlabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30)
         ]
         let replyButtonConstraints = [
             replyButton.leadingAnchor.constraint(equalTo: textContentlabel.leadingAnchor),
             replyButton.topAnchor.constraint(equalTo: textContentlabel.bottomAnchor, constant: 10),
-            replyButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
+            replyButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ]
         let retweetButtonConstraints = [
             retweetButton.leadingAnchor.constraint(equalTo: replyButton.trailingAnchor, constant: actionSpacing),

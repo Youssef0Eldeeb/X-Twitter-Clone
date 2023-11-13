@@ -19,6 +19,7 @@
 		A1B592162AFFA16300FC8330 /* TweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B592152AFFA16300FC8330 /* TweetTableViewCell.swift */; };
 		A1B5921A2B00CACE00FC8330 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B592192B00CACE00FC8330 /* ProfileViewController.swift */; };
 		A1B5921C2B00CE0E00FC8330 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5921B2B00CE0E00FC8330 /* SettingViewController.swift */; };
+		A1B5921E2B00DACE00FC8330 /* ProfileTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5921D2B00DACD00FC8330 /* ProfileTableViewHeader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		A1B592152AFFA16300FC8330 /* TweetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetTableViewCell.swift; sourceTree = "<group>"; };
 		A1B592192B00CACE00FC8330 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		A1B5921B2B00CE0E00FC8330 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		A1B5921D2B00DACD00FC8330 /* ProfileTableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewHeader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +70,7 @@
 		A1B591F32AFF844A00FC8330 /* TwitterClone */ = {
 			isa = PBXGroup;
 			children = (
-				A1B592142AFFA13600FC8330 /* Views */,
+				A1B592142AFFA13600FC8330 /* SubViews */,
 				A1B5920B2AFF870C00FC8330 /* Controllers */,
 				A1B591F42AFF844A00FC8330 /* AppDelegate.swift */,
 				A1B591F62AFF844A00FC8330 /* SceneDelegate.swift */,
@@ -82,18 +84,19 @@
 		A1B5920B2AFF870C00FC8330 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A1B592182B00CA6300FC8330 /* RabBarCoreVCs */,
+				A1B592182B00CA6300FC8330 /* TabBarCoreVCs */,
 				A1B592172B00CA5500FC8330 /* GeneralVCs */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		A1B592142AFFA13600FC8330 /* Views */ = {
+		A1B592142AFFA13600FC8330 /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
 				A1B592152AFFA16300FC8330 /* TweetTableViewCell.swift */,
+				A1B5921D2B00DACD00FC8330 /* ProfileTableViewHeader.swift */,
 			);
-			path = Views;
+			path = SubViews;
 			sourceTree = "<group>";
 		};
 		A1B592172B00CA5500FC8330 /* GeneralVCs */ = {
@@ -105,7 +108,7 @@
 			path = GeneralVCs;
 			sourceTree = "<group>";
 		};
-		A1B592182B00CA6300FC8330 /* RabBarCoreVCs */ = {
+		A1B592182B00CA6300FC8330 /* TabBarCoreVCs */ = {
 			isa = PBXGroup;
 			children = (
 				A1B592082AFF864400FC8330 /* MainTabbarViewController.swift */,
@@ -114,7 +117,7 @@
 				A1B592102AFF885800FC8330 /* NotificationViewController.swift */,
 				A1B592122AFF888300FC8330 /* MessagesViewController.swift */,
 			);
-			path = RabBarCoreVCs;
+			path = TabBarCoreVCs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -197,6 +200,7 @@
 				A1B5921A2B00CACE00FC8330 /* ProfileViewController.swift in Sources */,
 				A1B5920D2AFF884500FC8330 /* HomeViewController.swift in Sources */,
 				A1B592162AFFA16300FC8330 /* TweetTableViewCell.swift in Sources */,
+				A1B5921E2B00DACE00FC8330 /* ProfileTableViewHeader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
