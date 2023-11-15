@@ -6,9 +6,14 @@
 //
 
 import UIKit
+import Combine
 
 class RegisterViewController: UIViewController {
 
+    private var viewModel = RegisterViewModel()
+    private var subscriptions: Set<AnyCancellable> = []
+    
+    // UI Components
     private let registerTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -43,10 +48,12 @@ class RegisterViewController: UIViewController {
         button.backgroundColor = UIColor(named: "blueTwitterColor")
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 25
+        button.isEnabled = false
         return button
     }()
     
     
+    //Functions
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -56,7 +63,34 @@ class RegisterViewController: UIViewController {
         view.addSubview(registerButton)
         
         configureconstraints()
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapToDismiss)))
+        bindViews()
     }
+    
+    @objc private func tapToDismiss(){
+        view.endEditing(true)
+    }
+    
+    @objc private func changeEmailField(){
+        viewModel.email = emailTextField.text
+        viewModel.validateRegistration()
+    }
+    
+    @objc private func changePasswordField(){
+        viewModel.password = passwordTextField.text
+        viewModel.validateRegistration()
+    }
+    
+    private func bindViews(){
+        emailTextField.addTarget(self, action: #selector(changeEmailField), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(changePasswordField), for: .editingChanged)
+        
+        viewModel.$isRegistrationValid.sink { [weak self] isValid in
+            self?.registerButton.isEnabled = isValid
+        }.store(in: &subscriptions)
+    }
+    
+    
     private func configureconstraints(){
         
         let registerLabelConstraints = [
@@ -86,7 +120,6 @@ class RegisterViewController: UIViewController {
         NSLayoutConstraint.activate(emailTextFieldConstraints)
         NSLayoutConstraint.activate(passwordTextFieldConstraints)
         NSLayoutConstraint.activate(registerButtonConstraints)
-        
         
     }
     
