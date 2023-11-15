@@ -13,7 +13,7 @@ class OnboardingViewController: UIViewController {
     let welcomeLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.text = "See what's happen in the world right now"
+        label.text = "See what's happening in the world right now"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.textColor = .label
@@ -24,7 +24,7 @@ class OnboardingViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Create Acount", for: .normal)
-        button.backgroundColor = UIColor(red: 29/255, green: 161/255, blue: 242/255, alpha: 1)
+        button.backgroundColor = UIColor(named: "blueTwitterColor")
         button.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 30
@@ -44,7 +44,7 @@ class OnboardingViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Login", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 14)
-        button.setTitleColor(UIColor(red: 29/255, green: 161/255, blue: 242/255, alpha: 1), for: .normal) 
+        button.setTitleColor(UIColor(named: "blueTwitterColor"), for: .normal)
         return button
     }()
     
@@ -60,7 +60,13 @@ class OnboardingViewController: UIViewController {
         view.addSubview(promptLabel)
         view.addSubview(loginButton)
         
+        creatAcountButton.addTarget(self, action: #selector(createAcountTap), for: .touchUpInside)
         configureConstraints()
+    }
+    
+    @objc func createAcountTap(){
+        let vc = RegisterViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     private func configureConstraints(){
