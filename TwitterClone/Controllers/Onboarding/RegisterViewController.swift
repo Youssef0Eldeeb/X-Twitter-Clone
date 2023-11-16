@@ -64,6 +64,7 @@ class RegisterViewController: UIViewController {
         
         configureconstraints()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapToDismiss)))
+        registerButton.addTarget(self, action: #selector(registerBtnTap), for: .touchUpInside)
         bindViews()
     }
     
@@ -80,6 +81,9 @@ class RegisterViewController: UIViewController {
         viewModel.password = passwordTextField.text
         viewModel.validateRegistration()
     }
+    @objc private func registerBtnTap(){
+        viewModel.createUser()
+    }
     
     private func bindViews(){
         emailTextField.addTarget(self, action: #selector(changeEmailField), for: .editingChanged)
@@ -87,6 +91,10 @@ class RegisterViewController: UIViewController {
         
         viewModel.$isRegistrationValid.sink { [weak self] isValid in
             self?.registerButton.isEnabled = isValid
+        }.store(in: &subscriptions)
+        
+        viewModel.$user.sink { [weak self] user in
+            print(user)
         }.store(in: &subscriptions)
     }
     
