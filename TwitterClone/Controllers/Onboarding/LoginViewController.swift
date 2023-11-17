@@ -1,23 +1,23 @@
 //
-//  RegisterViewController.swift
+//  LoginViewController.swift
 //  TwitterClone
 //
-//  Created by Youssef Eldeeb on 15/11/2023.
+//  Created by Youssef Eldeeb on 17/11/2023.
 //
 
 import UIKit
 import Combine
 
-class RegisterViewController: UIViewController {
+class LoginViewController: UIViewController {
 
     private var viewModel = AuthenticationViewModel()
     private var subscriptions: Set<AnyCancellable> = []
     
     // UI Components
-    private let registerTitleLabel: UILabel = {
+    private let loginTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Create your account"
+        label.text = "Login to your acount"
         label.font = .systemFont(ofSize: 32, weight: .bold)
         return label
     }()
@@ -39,10 +39,10 @@ class RegisterViewController: UIViewController {
         textField.isSecureTextEntry = true
         return textField
     }()
-    private let registerButton: UIButton = {
+    private let loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Create account", for: .normal)
+        button.setTitle("Login", for: .normal)
         button.tintColor = .white
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         button.backgroundColor = UIColor(named: "blueTwitterColor")
@@ -52,22 +52,20 @@ class RegisterViewController: UIViewController {
         return button
     }()
     
-    
-    //Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .systemBackground
-        view.addSubview(registerTitleLabel)
+        view.addSubview(loginTitleLabel)
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
-        view.addSubview(registerButton)
+        view.addSubview(loginButton)
         
         configureconstraints()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapToDismiss)))
-        registerButton.addTarget(self, action: #selector(registerBtnTap), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(loginBtnTap), for: .touchUpInside)
         bindViews()
     }
-    
     @objc private func tapToDismiss(){
         view.endEditing(true)
     }
@@ -81,8 +79,9 @@ class RegisterViewController: UIViewController {
         viewModel.password = passwordTextField.text
         viewModel.validateAuthentication()
     }
-    @objc private func registerBtnTap(){
-        viewModel.createUser()
+    
+    @objc private func loginBtnTap(){
+        viewModel.loginUser()
     }
     
     private func bindViews(){
@@ -90,14 +89,13 @@ class RegisterViewController: UIViewController {
         passwordTextField.addTarget(self, action: #selector(changePasswordField), for: .editingChanged)
         
         viewModel.$isAuthenticationValid.sink { [weak self] isValid in
-            self?.registerButton.isEnabled = isValid
+            self?.loginButton.isEnabled = isValid
         }.store(in: &subscriptions)
         
         viewModel.$user.sink { [weak self] user in
             guard user != nil else {return}
             guard let vc = self?.navigationController?.viewControllers.first as? OnboardingViewController else {return}
             vc.dismiss(animated: true)
-            
         }.store(in: &subscriptions)
         
         viewModel.$error.sink {[weak self] error in
@@ -106,16 +104,15 @@ class RegisterViewController: UIViewController {
         }.store(in: &subscriptions)
     }
     
-    
     private func configureconstraints(){
         
-        let registerLabelConstraints = [
-            registerTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            registerTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20)
+        let loginLabelConstraints = [
+            loginTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loginTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20)
         ]
         let emailTextFieldConstraints = [
             emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            emailTextField.topAnchor.constraint(equalTo: registerTitleLabel.bottomAnchor, constant: 20),
+            emailTextField.topAnchor.constraint(equalTo: loginTitleLabel.bottomAnchor, constant: 20),
             emailTextField.widthAnchor.constraint(equalToConstant: view.frame.width - 40),
             emailTextField.heightAnchor.constraint(equalToConstant: 60)
         ]
@@ -125,19 +122,18 @@ class RegisterViewController: UIViewController {
             passwordTextField.widthAnchor.constraint(equalToConstant: view.frame.width - 40),
             passwordTextField.heightAnchor.constraint(equalToConstant: 60)
         ]
-        let registerButtonConstraints = [
-            registerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            registerButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
-            registerButton.widthAnchor.constraint(equalToConstant: 180),
-            registerButton.heightAnchor.constraint(equalToConstant: 50)
+        let loginButtonConstraints = [
+            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
+            loginButton.widthAnchor.constraint(equalToConstant: 180),
+            loginButton.heightAnchor.constraint(equalToConstant: 50)
         ]
         
-        NSLayoutConstraint.activate(registerLabelConstraints)
+        NSLayoutConstraint.activate(loginLabelConstraints)
         NSLayoutConstraint.activate(emailTextFieldConstraints)
         NSLayoutConstraint.activate(passwordTextFieldConstraints)
-        NSLayoutConstraint.activate(registerButtonConstraints)
+        NSLayoutConstraint.activate(loginButtonConstraints)
         
     }
-    
 
 }

@@ -30,15 +30,20 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
-        if Auth.auth().currentUser == nil {
-            let vc = UINavigationController(rootViewController: OnboardingViewController())
-            vc.modalPresentationStyle = .fullScreen
-            present(vc, animated: false)
-        }
+        handleAuthentication()
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         timelineTableView.frame = view.frame
+    }
+    
+    @objc func profileTap(){
+        let vc = ProfileViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    @objc func settingTap(){
+        let vc = SettingViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     private func configureNavigationBar(){
@@ -57,13 +62,13 @@ class HomeViewController: UIViewController {
         let settingImage = UIImage(systemName: "gearshape")
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: settingImage, style: .plain, target: self, action: #selector(settingTap))
     }
-    @objc func profileTap(){
-        let vc = ProfileViewController()
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    @objc func settingTap(){
-        let vc = SettingViewController()
-        navigationController?.pushViewController(vc, animated: true)
+    
+    private func handleAuthentication(){
+        if Auth.auth().currentUser == nil {
+            let vc = UINavigationController(rootViewController: OnboardingViewController())
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: false)
+        }
     }
 
 

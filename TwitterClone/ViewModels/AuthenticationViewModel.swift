@@ -9,21 +9,22 @@ import Foundation
 import Firebase
 import Combine
 
-class RegisterViewModel: ObservableObject{
+class AuthenticationViewModel: ObservableObject{
     
     @Published var email: String?
     @Published var password: String?
-    @Published var isRegistrationValid: Bool = false
+    @Published var isAuthenticationValid: Bool = false
     @Published var user: User?
+    @Published var error: String?
     
     private var subscriptions: Set<AnyCancellable> = []
     
-    func validateRegistration(){
+    func validateAuthentication(){
         guard let email = email, let password = password else{
-            isRegistrationValid = false
+            isAuthenticationValid = false
             return
         }
-        isRegistrationValid = isValidEmail(email) && password.count >= 8
+        isAuthenticationValid = isValidEmail(email) && password.count >= 8
     }
     
     private func isValidEmail(_ email: String) -> Bool {
@@ -36,14 +37,27 @@ class RegisterViewModel: ObservableObject{
     func createUser(){
         guard let email = email, let password = password else{ return }
         AuthenticationManager.shared.registerUser(email: email, password: password)
-            .sink { _ in
-                
+            .sink { [weak self] completion in
+                if case .failure(let error) = completion {
+                    self?.error = error.localizedDescription
+                }
             } receiveValue: { [weak self] user in
                 self?.user = user
             }
             .store(in: &subscriptions)
-
     }
-
+    
+    func loginUser(){
+        guard let email = email, let password = password else{ return }
+        AuthenticationManager.shared.loginUser(email: email, password: password)
+            .sink { [weak self] completion in
+                if case .failure(let error) = completion {
+                    self?.error = error.localizedDescription
+                }
+            } receiveValue: { [weak self] user in
+                self?.user = user
+            }
+            .store(in: &subscriptions)
+    }
     
 }
