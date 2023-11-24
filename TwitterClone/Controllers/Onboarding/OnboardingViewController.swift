@@ -13,7 +13,7 @@ class OnboardingViewController: UIViewController {
     let welcomeLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.text = "See what's happening in the world right now"
+        label.text = "See what's happening in the world right now."
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.textColor = .label
@@ -25,9 +25,9 @@ class OnboardingViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Create Acount", for: .normal)
         button.backgroundColor = UIColor(named: "blueTwitterColor")
-        button.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         button.layer.masksToBounds = true
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = 25
         button.tintColor = .white
         return button
     }()
@@ -62,6 +62,7 @@ class OnboardingViewController: UIViewController {
         
         creatAcountButton.addTarget(self, action: #selector(createAcountTap), for: .touchUpInside)
         loginButton.addTarget(self, action: #selector(loginBtnTap), for: .touchUpInside)
+        configureNavigationBar()
         configureConstraints()
     }
     
@@ -72,6 +73,17 @@ class OnboardingViewController: UIViewController {
     @objc private func loginBtnTap(){
         let vc = LoginViewController()
         navigationController?.pushViewController(vc, animated: true)
+    }
+    private func configureNavigationBar(){
+        let size: CGFloat = 28
+        let logoImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: size, height: size))
+        logoImageView.contentMode = .scaleAspectFit
+        logoImageView.image = UIImage(named: "twitterLogo")
+        
+        let middelView = UIView(frame: CGRect(x: 0, y: 0, width: size, height: size))
+        middelView.addSubview(logoImageView)
+        navigationItem.titleView = middelView
+        
     }
     
     private func configureConstraints(){
@@ -84,7 +96,7 @@ class OnboardingViewController: UIViewController {
             creatAcountButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             creatAcountButton.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 30),
             creatAcountButton.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor, constant: -40),
-            creatAcountButton.heightAnchor.constraint(equalToConstant: 60)
+            creatAcountButton.heightAnchor.constraint(equalToConstant: 50)
         ]
         let promptLabelConstraints = [
             promptLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),

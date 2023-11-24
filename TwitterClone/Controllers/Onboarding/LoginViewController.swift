@@ -17,8 +17,8 @@ class LoginViewController: UIViewController {
     private let loginTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Login to your acount"
-        label.font = .systemFont(ofSize: 32, weight: .bold)
+        label.text = "Log in to X"
+        label.font = .systemFont(ofSize: 30, weight: .bold)
         return label
     }()
     private let emailTextField: UITextField = {
@@ -42,12 +42,12 @@ class LoginViewController: UIViewController {
     private let loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Login", for: .normal)
-        button.tintColor = .white
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
-        button.backgroundColor = UIColor(named: "blueTwitterColor")
+        button.setTitle("Log in", for: .normal)
+        button.tintColor = .black
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
+        button.backgroundColor = .lightGray
         button.layer.masksToBounds = true
-        button.layer.cornerRadius = 25
+        button.layer.cornerRadius = 20
         button.isEnabled = false
         return button
     }()
@@ -64,10 +64,14 @@ class LoginViewController: UIViewController {
         configureconstraints()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapToDismiss)))
         loginButton.addTarget(self, action: #selector(loginBtnTap), for: .touchUpInside)
+        configureNavigationBar()
         bindViews()
     }
     @objc private func tapToDismiss(){
         view.endEditing(true)
+    }
+    @objc private func cancelBtnTap(){
+        navigationController?.popViewController(animated: true)
     }
     
     @objc private func changeEmailField(){
@@ -82,6 +86,20 @@ class LoginViewController: UIViewController {
     
     @objc private func loginBtnTap(){
         viewModel.loginUser()
+    }
+    private func configureNavigationBar(){
+        let size: CGFloat = 28
+        let logoImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: size, height: size))
+        logoImageView.contentMode = .scaleAspectFit
+        logoImageView.image = UIImage(named: "twitterLogo")
+        
+        let middelView = UIView(frame: CGRect(x: 0, y: 0, width: size, height: size))
+        middelView.addSubview(logoImageView)
+        navigationItem.titleView = middelView
+        
+        let leftBarButton = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(cancelBtnTap))
+        leftBarButton.tintColor = .label
+        navigationItem.leftBarButtonItem = leftBarButton
     }
     
     private func bindViews(){
@@ -108,7 +126,7 @@ class LoginViewController: UIViewController {
         
         let loginLabelConstraints = [
             loginTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loginTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20)
+            loginTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30)
         ]
         let emailTextFieldConstraints = [
             emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -124,9 +142,9 @@ class LoginViewController: UIViewController {
         ]
         let loginButtonConstraints = [
             loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
-            loginButton.widthAnchor.constraint(equalToConstant: 180),
-            loginButton.heightAnchor.constraint(equalToConstant: 50)
+            loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            loginButton.widthAnchor.constraint(equalToConstant: 100),
+            loginButton.heightAnchor.constraint(equalToConstant: 40)
         ]
         
         NSLayoutConstraint.activate(loginLabelConstraints)

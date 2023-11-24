@@ -2,16 +2,17 @@
   "images" : [
     {
       "filename" : "1692007265x-twitter-logo-png.png",
-      "idiom" : "universal",
-      "scale" : "1x"
+      "idiom" : "universal"
     },
     {
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x"
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Logo_X_Corp_\"Twitter\".svg.png",
+      "idiom" : "universal"
     }
   ],
   "info" : {
