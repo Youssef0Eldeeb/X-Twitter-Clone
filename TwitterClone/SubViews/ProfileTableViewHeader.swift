@@ -48,8 +48,9 @@ class ProfileTableViewHeader: UIView {
     
     private var leadingAnchors: [NSLayoutConstraint] = []
     private var trailingAnchors: [NSLayoutConstraint] = []
+    var delegate: ProfileDelegate!
     
-    // UI Components
+    // MARK: - UI Components
     private let coverProfileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -67,7 +68,19 @@ class ProfileTableViewHeader: UIView {
         imageView.image = UIImage(named: "coverProfile")
         return imageView
     }()
-    
+    private let editButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Edit profile", for: .normal)
+        button.tintColor = .label
+        button.titleLabel?.font = .systemFont(ofSize: 12, weight: .semibold)
+        button.backgroundColor = .systemBackground
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 15
+        button.layer.borderWidth = 0.8
+        button.layer.borderColor = CGColor(gray: 0.28, alpha: 1)
+        return button
+    }()
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -168,12 +181,13 @@ class ProfileTableViewHeader: UIView {
     
     
     
-    // Methods
+    // MARK: - Methods
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.addSubview(coverProfileImageView)
         self.addSubview(avatarProfileImageView)
+        self.addSubview(editButton)
         self.addSubview(nameLabel)
         self.addSubview(usernameLabel)
         self.addSubview(bioLabel)
@@ -188,6 +202,7 @@ class ProfileTableViewHeader: UIView {
         
         configureConstraints()
         configureStackButtonsPressed()
+        editButton.addTarget(self, action: #selector(editBtnTap), for: .touchUpInside)
     }
     required init?(coder: NSCoder) {
         fatalError()
@@ -205,6 +220,9 @@ class ProfileTableViewHeader: UIView {
             
             button.addTarget(self, action: #selector(didTap(_:)), for: .touchUpInside)
         }
+    }
+    @objc private func editBtnTap(){
+        delegate.EditDidTap()
     }
     @objc private func didTap(_ sender: UIButton) {
         guard let label = sender.titleLabel?.text else {return}
@@ -224,6 +242,7 @@ class ProfileTableViewHeader: UIView {
         }
     }
     
+    // MARK: - Constraints
     private func configureConstraints(){
         let coverImageConstraints = [
             coverProfileImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -236,6 +255,12 @@ class ProfileTableViewHeader: UIView {
             avatarProfileImageView.centerYAnchor.constraint(equalTo: coverProfileImageView.bottomAnchor, constant: 10),
             avatarProfileImageView.widthAnchor.constraint(equalToConstant: 70),
             avatarProfileImageView.heightAnchor.constraint(equalToConstant: 70)
+        ]
+        let editButtonConstraints = [
+            editButton.topAnchor.constraint(equalTo: coverProfileImageView.bottomAnchor, constant: 10),
+            editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            editButton.widthAnchor.constraint(equalToConstant: 100),
+            editButton.heightAnchor.constraint(equalToConstant: 30)
         ]
         let nameLabelConstraints = [
             nameLabel.leadingAnchor.constraint(equalTo: avatarProfileImageView.leadingAnchor),
@@ -297,6 +322,7 @@ class ProfileTableViewHeader: UIView {
         
         NSLayoutConstraint.activate(coverImageConstraints)
         NSLayoutConstraint.activate(avatarImageConstraints)
+        NSLayoutConstraint.activate(editButtonConstraints)
         NSLayoutConstraint.activate(nameLabelConstraints)
         NSLayoutConstraint.activate(usernameConstraints)
         NSLayoutConstraint.activate(bioConstraints)

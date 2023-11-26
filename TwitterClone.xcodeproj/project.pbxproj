@@ -39,11 +39,12 @@
 		A1B592462B08D2F100FC8330 /* TwitterUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B592452B08D2F100FC8330 /* TwitterUser.swift */; };
 		A1B592482B08D45E00FC8330 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B592472B08D45E00FC8330 /* DatabaseManager.swift */; };
 		A1B5924A2B09335400FC8330 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B592492B09335400FC8330 /* HomeViewModel.swift */; };
-		A1B5924C2B093C9200FC8330 /* ProfileDataFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5924B2B093C9200FC8330 /* ProfileDataFormViewController.swift */; };
+		A1B5924C2B093C9200FC8330 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5924B2B093C9200FC8330 /* EditProfileViewController.swift */; };
 		A1B5924E2B093D6600FC8330 /* ProfileDataFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5924D2B093D6600FC8330 /* ProfileDataFormViewModel.swift */; };
 		A1B5925E2B0A224700FC8330 /* AuthenticationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5925D2B0A224700FC8330 /* AuthenticationViewModelTests.swift */; };
 		A1B592652B0A49E200FC8330 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A1B592642B0A49E200FC8330 /* FirebaseAuth */; };
 		A1B592672B0B544000FC8330 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = A1B592662B0B544000FC8330 /* FirebaseFirestore */; };
+		A1B5926B2B13422A00FC8330 /* EditProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5926A2B13422A00FC8330 /* EditProfileTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,10 +83,11 @@
 		A1B592452B08D2F100FC8330 /* TwitterUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterUser.swift; sourceTree = "<group>"; };
 		A1B592472B08D45E00FC8330 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		A1B592492B09335400FC8330 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		A1B5924B2B093C9200FC8330 /* ProfileDataFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDataFormViewController.swift; sourceTree = "<group>"; };
+		A1B5924B2B093C9200FC8330 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		A1B5924D2B093D6600FC8330 /* ProfileDataFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDataFormViewModel.swift; sourceTree = "<group>"; };
 		A1B592532B0A218B00FC8330 /* TwitterCloneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TwitterCloneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1B5925D2B0A224700FC8330 /* AuthenticationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModelTests.swift; sourceTree = "<group>"; };
+		A1B5926A2B13422A00FC8330 /* EditProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +172,7 @@
 			children = (
 				A1B592152AFFA16300FC8330 /* TweetTableViewCell.swift */,
 				A1B5921D2B00DACD00FC8330 /* ProfileTableViewHeader.swift */,
+				A1B5926A2B13422A00FC8330 /* EditProfileTableViewCell.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -179,7 +182,7 @@
 			children = (
 				A1B592192B00CACE00FC8330 /* ProfileViewController.swift */,
 				A1B5921B2B00CE0E00FC8330 /* SettingViewController.swift */,
-				A1B5924B2B093C9200FC8330 /* ProfileDataFormViewController.swift */,
+				A1B5924B2B093C9200FC8330 /* EditProfileViewController.swift */,
 			);
 			path = GeneralVCs;
 			sourceTree = "<group>";
@@ -393,7 +396,7 @@
 				A1B591F52AFF844A00FC8330 /* AppDelegate.swift in Sources */,
 				A1B5921C2B00CE0E00FC8330 /* SettingViewController.swift in Sources */,
 				A1B591F72AFF844A00FC8330 /* SceneDelegate.swift in Sources */,
-				A1B5924C2B093C9200FC8330 /* ProfileDataFormViewController.swift in Sources */,
+				A1B5924C2B093C9200FC8330 /* EditProfileViewController.swift in Sources */,
 				A1B592462B08D2F100FC8330 /* TwitterUser.swift in Sources */,
 				A1B592362B026D1F00FC8330 /* OnboardingViewController.swift in Sources */,
 				A1B5921A2B00CACE00FC8330 /* ProfileViewController.swift in Sources */,
@@ -402,6 +405,7 @@
 				A1B592402B07508F00FC8330 /* LoginViewController.swift in Sources */,
 				A1B5924E2B093D6600FC8330 /* ProfileDataFormViewModel.swift in Sources */,
 				A1B592482B08D45E00FC8330 /* DatabaseManager.swift in Sources */,
+				A1B5926B2B13422A00FC8330 /* EditProfileTableViewCell.swift in Sources */,
 				A1B592432B075D9C00FC8330 /* UIAlertController+Extension.swift in Sources */,
 				A1B592382B04AB4C00FC8330 /* RegisterViewController.swift in Sources */,
 				A1B592162AFFA16300FC8330 /* TweetTableViewCell.swift in Sources */,

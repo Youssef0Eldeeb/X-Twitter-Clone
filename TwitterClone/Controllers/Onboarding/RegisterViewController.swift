@@ -70,7 +70,7 @@ class RegisterViewController: UIViewController {
     }()
     
     
-    //Functions
+    // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground

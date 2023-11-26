@@ -6,11 +6,15 @@
 //
 
 import UIKit
+protocol ProfileDelegate {
+    func EditDidTap()
+}
 
 class ProfileViewController: UIViewController {
 
     private var isStatusBarHidden: Bool = true
     
+    // MARK: - UI Components
     private let statusBar: UIView = {
         let view = UIView()
         view.backgroundColor = .systemBackground
@@ -26,7 +30,7 @@ class ProfileViewController: UIViewController {
         return tableView
     }()
     
-    
+    // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -45,6 +49,7 @@ class ProfileViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         
         configureConstraint()
+        headerView.delegate = self
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -92,6 +97,14 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
                 self?.statusBar.layer.opacity = 0
             }
         }
+    }
+    
+}
+
+extension ProfileViewController: ProfileDelegate{
+    func EditDidTap() {
+        let vc = UINavigationController(rootViewController: EditProfileViewController())
+        self.present(vc, animated: true)
     }
     
 }

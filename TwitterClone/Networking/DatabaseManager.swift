@@ -9,6 +9,7 @@ import Foundation
 import Firebase
 import FirebaseFirestoreSwift
 import FirebaseFirestoreCombineSwift
+import FirebaseFirestore
 import Combine
 
 class DatabaseManager{

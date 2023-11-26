@@ -52,6 +52,7 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         

@@ -90,7 +90,7 @@ class HomeViewController: UIViewController {
     }
     
     private func completeUserOnboarding(){
-        let vc = ProfileDataFormViewController()
+        let vc = EditProfileViewController()
         present(vc, animated: true)
     }
 

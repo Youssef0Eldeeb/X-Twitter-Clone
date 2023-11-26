@@ -9,7 +9,7 @@ import UIKit
 
 class OnboardingViewController: UIViewController {
 
-    //UIComponents
+    // MARK: - UI Components
     let welcomeLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -48,8 +48,7 @@ class OnboardingViewController: UIViewController {
         return button
     }()
     
-    
-    
+    // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 

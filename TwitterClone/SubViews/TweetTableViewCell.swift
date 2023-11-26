@@ -24,7 +24,7 @@ class TweetTableViewCell: UITableViewCell {
     
     private let actionSpacing: CGFloat = 55
     
-    //UI Components
+    // MARK: - UI Components
     private let avatarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -87,7 +87,7 @@ class TweetTableViewCell: UITableViewCell {
         return button
     }()
     
-    
+    // MARK: - Methods
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(avatarImageView)
