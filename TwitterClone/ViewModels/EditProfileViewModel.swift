@@ -1,14 +1,14 @@
 //
-//  ProfileDataFormViewModel.swift
+//  EditProfileViewModel.swift
 //  TwitterClone
 //
-//  Created by Youssef Eldeeb on 18/11/2023.
+//  Created by Youssef Eldeeb on 26/11/2023.
 //
 
 import Foundation
 
 
-class ProfileDataFormViewModel: ObservableObject{
+class EditProfileViewModel: ObservableObject{
     
     @Published var name: String?
     @Published var username: String?

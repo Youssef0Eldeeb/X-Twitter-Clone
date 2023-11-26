@@ -26,7 +26,8 @@ class EditProfileTableViewCell: UITableViewCell {
         textField.keyboardType = .default
         textField.backgroundColor = .systemBackground
         textField.leftViewMode = .always
-        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
         textField.attributedPlaceholder = NSAttributedString(string: "placeholder", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
         return textField
     }()
@@ -49,7 +50,7 @@ class EditProfileTableViewCell: UITableViewCell {
             title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             title.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-            title.widthAnchor.constraint(equalToConstant: 60)
+            title.widthAnchor.constraint(equalToConstant: 70)
         ]
         let textFieldConstraints = [
             textField.topAnchor.constraint(equalTo: title.topAnchor),
