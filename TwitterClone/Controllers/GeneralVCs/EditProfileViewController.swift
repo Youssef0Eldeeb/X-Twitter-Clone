@@ -73,7 +73,6 @@ class EditProfileViewController: UIViewController {
     @objc private func saveBtnTap(){
         viewModel.uploadAvatar()
         
-        self.dismiss(animated: true)
     }
     @objc private func tapToDismiss(){
         view.endEditing(true)
@@ -142,6 +141,14 @@ class EditProfileViewController: UIViewController {
                 self?.rightBarButton.isHidden = true
             }
         }.store(in: &subscription)
+        
+        viewModel.$isOnboarding.sink { [weak self] success in
+            if success {
+                self?.dismiss(animated: true)
+            }
+        }.store(in: &subscription)
+        
+        
     }
 
 }

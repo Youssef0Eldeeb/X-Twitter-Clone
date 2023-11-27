@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import FirebaseStorage
 import Combine
-
+import FirebaseAuth
 
 class EditProfileViewModel: ObservableObject{
     
@@ -24,7 +24,7 @@ class EditProfileViewModel: ObservableObject{
     @Published var coverImageData: UIImage?
     @Published var isFormValid: Bool = false
     @Published var error: String = ""
-    @Published var url: URL?
+    @Published var isOnboarding: Bool = false
     
     var subscriptions: Set<AnyCancellable> = []
     
@@ -49,12 +49,38 @@ class EditProfileViewModel: ObservableObject{
                 StorageManager.shared.getDownloadURL(for: metaData.path)
             })
             .sink { [weak self] completion in
-            if case .failure(let error) = completion{
-                self?.error = error.localizedDescription
-            }
+                switch completion{
+                case .finished:
+                    self?.updateUserData()
+                case .failure(let error):
+                    self?.error = error.localizedDescription
+                }
         } receiveValue: { [weak self] url in
-            self?.url = url
+            self?.avatarPath = url.absoluteString
         }.store(in: &subscriptions)
+
+    }
+    private func updateUserData(){
+        guard let name = name,
+              let bio = bio,
+              let avatarPath = avatarPath,
+              let id = Auth.auth().currentUser?.uid
+        else { return }
+        let updatedFields: [String: Any] = [
+            "displayName": name,
+            "bio": bio,
+            "avatarPath": avatarPath,
+            "isUserOnboarded": true
+        ]
+        DatabaseManager.shared.updateCollectionUser(updateFields: updatedFields, id: id)
+            .sink(receiveCompletion: { [weak self] completion in
+                if case .failure(let error) = completion {
+                    print("error:\n" + error.localizedDescription)
+                    self?.error = error.localizedDescription
+                }
+            }, receiveValue: { [weak self] updated in
+                self?.isOnboarding = updated
+            }).store(in: &subscriptions)
 
     }
     
