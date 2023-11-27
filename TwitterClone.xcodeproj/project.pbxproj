@@ -46,6 +46,7 @@
 		A1B592672B0B544000FC8330 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = A1B592662B0B544000FC8330 /* FirebaseFirestore */; };
 		A1B5926B2B13422A00FC8330 /* EditProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5926A2B13422A00FC8330 /* EditProfileTableViewCell.swift */; };
 		A1B5926D2B1359EA00FC8330 /* EditProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5926C2B1359EA00FC8330 /* EditProfileHeaderView.swift */; };
+		A1B5926F2B14AF9C00FC8330 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5926E2B14AF9C00FC8330 /* StorageManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 		A1B5925D2B0A224700FC8330 /* AuthenticationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModelTests.swift; sourceTree = "<group>"; };
 		A1B5926A2B13422A00FC8330 /* EditProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewCell.swift; sourceTree = "<group>"; };
 		A1B5926C2B1359EA00FC8330 /* EditProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileHeaderView.swift; sourceTree = "<group>"; };
+		A1B5926E2B14AF9C00FC8330 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,6 +229,7 @@
 			children = (
 				A1B5923D2B04E2E800FC8330 /* AuthenticationManager.swift */,
 				A1B592472B08D45E00FC8330 /* DatabaseManager.swift */,
+				A1B5926E2B14AF9C00FC8330 /* StorageManager.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -392,6 +395,7 @@
 			files = (
 				A1B5920F2AFF884F00FC8330 /* SearchViewController.swift in Sources */,
 				A1B5926D2B1359EA00FC8330 /* EditProfileHeaderView.swift in Sources */,
+				A1B5926F2B14AF9C00FC8330 /* StorageManager.swift in Sources */,
 				A1B592132AFF888300FC8330 /* MessagesViewController.swift in Sources */,
 				A1B592092AFF864400FC8330 /* MainTabbarViewController.swift in Sources */,
 				A1B5924A2B09335400FC8330 /* HomeViewModel.swift in Sources */,

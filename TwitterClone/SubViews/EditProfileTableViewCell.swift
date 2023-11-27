@@ -23,6 +23,7 @@ class EditProfileTableViewCell: UITableViewCell {
     var textField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.font = .systemFont(ofSize: 14)
         textField.keyboardType = .default
         textField.backgroundColor = .systemBackground
         textField.leftViewMode = .always
