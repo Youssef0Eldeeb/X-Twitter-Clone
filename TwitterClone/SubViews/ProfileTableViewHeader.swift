@@ -51,7 +51,7 @@ class ProfileTableViewHeader: UIView {
     var delegate: ProfileDelegate!
     
     // MARK: - UI Components
-    private let coverProfileImageView: UIImageView = {
+    var coverProfileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -59,12 +59,13 @@ class ProfileTableViewHeader: UIView {
         imageView.image = UIImage(named: "coverProfile")
         return imageView
     }()
-    private let avatarProfileImageView: UIImageView = {
+    var avatarProfileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 35
+        imageView.contentMode = .scaleAspectFill
         imageView.image = UIImage(named: "coverProfile")
         return imageView
     }()
@@ -81,26 +82,26 @@ class ProfileTableViewHeader: UIView {
         button.layer.borderColor = CGColor(gray: 0.28, alpha: 1)
         return button
     }()
-    private let nameLabel: UILabel = {
+    var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Youssef Eldeeb"
+        label.text = "No name"
         label.font = .systemFont(ofSize: 18, weight: .bold)
         label.textColor = .label
         return label
     }()
-    private let usernameLabel: UILabel = {
+    var usernameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "@youssef3109"
+        label.text = "No username"
         label.textColor = .secondaryLabel
         label.font = .systemFont(ofSize: 14, weight: .regular)
         return label
     }()
-    private let bioLabel: UILabel = {
+    var bioLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "لا حول ولا قوة الا بالله العلي العظيم"
+        label.text = "No Bio"
         label.numberOfLines = 2
         label.textColor = .label
         label.font = .systemFont(ofSize: 14, weight: .regular)
@@ -113,26 +114,26 @@ class ProfileTableViewHeader: UIView {
         imageView.tintColor = .secondaryLabel
         return imageView
     }()
-    private let joinDateLabel: UILabel = {
+    var joinDateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Joined October 2023"
+        label.text = "No Date"
         label.textColor = .secondaryLabel
         label.font = .systemFont(ofSize: 12, weight: .regular)
         return label
     }()
-    private let followingNumberLabel: UILabel = {
+    var followingNumberLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "52"
+        label.text = "_"
         label.textColor = .label
         label.font = .systemFont(ofSize: 12, weight: .bold)
         return label
     }()
-    private let followersNumberLabel: UILabel = {
+    var followersNumberLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "13"
+        label.text = "_"
         label.textColor = .label
         label.font = .systemFont(ofSize: 12, weight: .bold)
         return label

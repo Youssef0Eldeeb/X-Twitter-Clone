@@ -56,7 +56,7 @@ class EditProfileTableViewCell: UITableViewCell {
         let textFieldConstraints = [
             textField.topAnchor.constraint(equalTo: title.topAnchor),
             textField.bottomAnchor.constraint(equalTo: title.bottomAnchor),
-            textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: 10),
+            textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -10),
             textField.leadingAnchor.constraint(equalTo: title.trailingAnchor, constant: 20)
         ]
         NSLayoutConstraint.activate(titleConstraints)
