@@ -16,23 +16,39 @@ class HomeViewController: UIViewController {
     }()
     
     private var subscriptions: Set<AnyCancellable> = []
-    
+    // MARK: - UI Components
     private let timelineTableView: UITableView = {
        let tableView = UITableView()
         tableView.register(TweetTableViewCell.self, forCellReuseIdentifier: TweetTableViewCell.identifier)
         return tableView
     }()
+    private lazy var tweetButton: UIButton = {
+        let button = UIButton(type: .system, primaryAction: UIAction{ [weak self] _ in
+            let vc = UINavigationController(rootViewController: TweetViewController())
+            vc.modalPresentationStyle = .fullScreen
+            self?.present(vc, animated: true)
+        })
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let plusSign = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 18, weight: .medium))
+        button.setImage(plusSign, for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = UIColor(named: "blueTwitterColor")
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 30
+        return button
+    }()
     
-    
-    
+    // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(timelineTableView)
+        view.addSubview(tweetButton)
         
         timelineTableView.delegate = self
         timelineTableView.dataSource = self
         
         configureNavigationBar()
+        configureConstraints()
         bindViews()
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -54,7 +70,6 @@ class HomeViewController: UIViewController {
         let vc = SettingViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
-    
     private func configureNavigationBar(){
         let size: CGFloat = 28
         let logoImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: size, height: size))
@@ -71,7 +86,6 @@ class HomeViewController: UIViewController {
         let settingImage = UIImage(systemName: "gearshape")
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: settingImage, style: .plain, target: self, action: #selector(settingTap))
     }
-    
     private func handleAuthentication(){
         if Auth.auth().currentUser == nil {
             let vc = UINavigationController(rootViewController: OnboardingViewController())
@@ -79,7 +93,6 @@ class HomeViewController: UIViewController {
             present(vc, animated: false)
         }
     }
-    
     private func bindViews(){
         viewModel.$user.sink { [weak self] user in
             guard let user = user else { return }
@@ -88,12 +101,19 @@ class HomeViewController: UIViewController {
             }
         }.store(in: &subscriptions)
     }
-    
     private func completeUserOnboarding(){
         let vc = EditProfileViewController()
         present(vc, animated: true)
     }
-
+    private func configureConstraints(){
+        let tweetButtonConstraints = [
+            tweetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            tweetButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
+            tweetButton.widthAnchor.constraint(equalToConstant: 60),
+            tweetButton.heightAnchor.constraint(equalToConstant: 60)
+        ]
+        NSLayoutConstraint.activate(tweetButtonConstraints)
+    }
 
 }
 

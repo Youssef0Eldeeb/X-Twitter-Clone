@@ -85,7 +85,6 @@ class ProfileTableViewHeader: UIView {
     var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "No name"
         label.font = .systemFont(ofSize: 18, weight: .bold)
         label.textColor = .label
         return label
@@ -93,7 +92,6 @@ class ProfileTableViewHeader: UIView {
     var usernameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "No username"
         label.textColor = .secondaryLabel
         label.font = .systemFont(ofSize: 14, weight: .regular)
         return label
@@ -101,7 +99,6 @@ class ProfileTableViewHeader: UIView {
     var bioLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "No Bio"
         label.numberOfLines = 2
         label.textColor = .label
         label.font = .systemFont(ofSize: 14, weight: .regular)
@@ -117,7 +114,6 @@ class ProfileTableViewHeader: UIView {
     var joinDateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "No Date"
         label.textColor = .secondaryLabel
         label.font = .systemFont(ofSize: 12, weight: .regular)
         return label
@@ -125,7 +121,7 @@ class ProfileTableViewHeader: UIView {
     var followingNumberLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "_"
+        label.text = "0"
         label.textColor = .label
         label.font = .systemFont(ofSize: 12, weight: .bold)
         return label
@@ -133,7 +129,7 @@ class ProfileTableViewHeader: UIView {
     var followersNumberLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "_"
+        label.text = "0"
         label.textColor = .label
         label.font = .systemFont(ofSize: 12, weight: .bold)
         return label

@@ -49,6 +49,7 @@
 		A1B5926F2B14AF9C00FC8330 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5926E2B14AF9C00FC8330 /* StorageManager.swift */; };
 		A1B592712B1683D800FC8330 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B592702B1683D800FC8330 /* ProfileViewModel.swift */; };
 		A1B592742B168BBD00FC8330 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = A1B592732B168BBD00FC8330 /* SDWebImage */; };
+		A1B592762B1734B600FC8330 /* TweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B592752B1734B600FC8330 /* TweetViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,7 @@
 		A1B5926C2B1359EA00FC8330 /* EditProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileHeaderView.swift; sourceTree = "<group>"; };
 		A1B5926E2B14AF9C00FC8330 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		A1B592702B1683D800FC8330 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		A1B592752B1734B600FC8330 /* TweetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +194,7 @@
 				A1B592192B00CACE00FC8330 /* ProfileViewController.swift */,
 				A1B5921B2B00CE0E00FC8330 /* SettingViewController.swift */,
 				A1B5924B2B093C9200FC8330 /* EditProfileViewController.swift */,
+				A1B592752B1734B600FC8330 /* TweetViewController.swift */,
 			);
 			path = GeneralVCs;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 			files = (
 				A1B5920F2AFF884F00FC8330 /* SearchViewController.swift in Sources */,
 				A1B5926D2B1359EA00FC8330 /* EditProfileHeaderView.swift in Sources */,
+				A1B592762B1734B600FC8330 /* TweetViewController.swift in Sources */,
 				A1B5926F2B14AF9C00FC8330 /* StorageManager.swift in Sources */,
 				A1B592132AFF888300FC8330 /* MessagesViewController.swift in Sources */,
 				A1B592092AFF864400FC8330 /* MainTabbarViewController.swift in Sources */,
