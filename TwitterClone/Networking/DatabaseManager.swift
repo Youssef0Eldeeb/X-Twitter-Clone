@@ -35,9 +35,27 @@ class DatabaseManager{
             .map{ _ in true}
             .eraseToAnyPublisher()
     }
+    func setCollectionTweets(add tweet: Tweet) -> AnyPublisher<Bool, Error>{
+        return Firestore.firestore().collection(FCollectionPath.Tweet.rawValue).document(tweet.id).setData(from: tweet)
+            .map { _ in
+                return true
+            }
+            .eraseToAnyPublisher()
+    }
+    func getCollectionTweets(retrevie id: String) -> AnyPublisher<[Tweet], Error>{
+        return Firestore.firestore().collection(FCollectionPath.Tweet.rawValue).whereField("authorId", isEqualTo: id).getDocuments()
+            .tryMap(\.documents)
+            .tryMap { snapshots in
+                try snapshots.map{
+                    try $0.data(as: Tweet.self)
+                }
+            }
+            .eraseToAnyPublisher()
+    }
     
 }
 
 enum FCollectionPath: String{
     case User
+    case Tweet
 }

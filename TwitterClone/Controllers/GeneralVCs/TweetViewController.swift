@@ -6,9 +6,14 @@
 //
 
 import UIKit
+import Combine
 
 class TweetViewController: UIViewController {
 
+    private var subscriptions: Set<AnyCancellable> = []
+    var viewModel = TweetViewModel()
+    
+    // MARK: - UI Components
     private lazy var leftBarButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: nil, style: .done, target: self, action: #selector(cancelBtnTap))
         button.title = "Cancel"
@@ -30,6 +35,7 @@ class TweetViewController: UIViewController {
         customView.addSubview(button)
         
         let customBarButtonItem = UIBarButtonItem(customView: customView)
+        customBarButtonItem.isEnabled = false
         return customBarButtonItem
     }()
     private lazy var tweetTextView: UITextView = {
@@ -50,18 +56,35 @@ class TweetViewController: UIViewController {
         view.addSubview(tweetTextView)
         configureConstraints()
         tweetTextView.delegate = self
+        
+        bindViews()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getUserData()
+    }
+    private func bindViews(){
+        viewModel.$isValidToTweet.sink { [weak self] state in
+            self?.rightBarButton.isEnabled = state
+        }.store(in: &subscriptions)
+        
+        viewModel.$isTweeted.sink { [weak self] success in
+            if success{
+                self?.dismiss(animated: true)
+            }
+        }.store(in: &subscriptions)
     }
     
     @objc private func cancelBtnTap(){
         self.dismiss(animated: true)
     }
     @objc private func postBtnTap(){
-        self.dismiss(animated: true)
+        viewModel.addTweet()
     }
     private func congigureNavigationBar(){
         self.navigationController?.navigationBar.backgroundColor = .systemBackground
         navigationItem.leftBarButtonItem = leftBarButton
-        navigationItem.rightBarButtonItem = rightBarButton      
+        navigationItem.rightBarButtonItem = rightBarButton
     }
     private func configureConstraints() {
         let tweetTextViewConstraints = [
@@ -76,7 +99,7 @@ class TweetViewController: UIViewController {
 
 }
 
-
+// MARK: - +UITextViewDelegate
 extension TweetViewController: UITextViewDelegate{
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == .gray {
@@ -89,5 +112,9 @@ extension TweetViewController: UITextViewDelegate{
             textView.text = "What's happening?"
             textView.textColor = .gray
         }
+    }
+    func textViewDidChange(_ textView: UITextView) {
+        viewModel.tweetContent = textView.text
+        viewModel.validateToTweet()
     }
 }

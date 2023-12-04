@@ -38,14 +38,12 @@ class TweetTableViewCell: UITableViewCell {
     }()
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Youssef Eldeeb"
         label.font = .systemFont(ofSize: 18, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     private let userNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "@youssef3109"
         label.textColor = .secondaryLabel
         label.font = .systemFont(ofSize: 16, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -54,7 +52,6 @@ class TweetTableViewCell: UITableViewCell {
     private let textContentlabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "this is my first tweet to this twitterClone App that simulate the real twitter app this is its name now is X, \n Hello World"
         label.numberOfLines = 0
         return label
     }()
@@ -104,13 +101,6 @@ class TweetTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError()
     }
-    
-    private func configureButtonsTaps(){
-        replyButton.addTarget(self, action: #selector(replyTaped), for: .touchUpInside)
-        retweetButton.addTarget(self, action: #selector(retweetTaped), for: .touchUpInside)
-        likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
-        shareButton.addTarget(self, action: #selector(shareTapped), for: .touchUpInside)
-    }
     @objc func replyTaped(){
         delegate?.tweetTableViewCellDidTapReply()
     }
@@ -122,6 +112,20 @@ class TweetTableViewCell: UITableViewCell {
     }
     @objc func shareTapped(){
         delegate?.tweetTableViewCellDidTapShare()
+    }
+    
+    private func configureButtonsTaps(){
+        replyButton.addTarget(self, action: #selector(replyTaped), for: .touchUpInside)
+        retweetButton.addTarget(self, action: #selector(retweetTaped), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
+        shareButton.addTarget(self, action: #selector(shareTapped), for: .touchUpInside)
+    }
+    
+    func configureTweet(displayName: String, userName: String, tweetContent: String, avatarPath: String){
+        nameLabel.text = displayName
+        userNameLabel.text = "@\(userName)"
+        textContentlabel.text = tweetContent
+        avatarImageView.sd_setImage(with: URL(string: avatarPath))
     }
     
     private func configureConstraints(){
