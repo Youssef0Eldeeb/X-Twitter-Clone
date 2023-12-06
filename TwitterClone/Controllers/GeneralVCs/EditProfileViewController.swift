@@ -85,29 +85,37 @@ class EditProfileViewController: UIViewController {
         }
         viewModel.validateUserProfile()
     }
-    @objc private func didUpdateBio(){
+    @objc private func didUpdateUsername(){
         let indexPath = IndexPath(row: 1, section: 0)
+        
+        if let cell = tableView.cellForRow(at: indexPath) as? EditProfileTableViewCell {
+            viewModel.username = cell.textField.text
+        }
+        viewModel.validateUserProfile()
+    }
+    @objc private func didUpdateBio(){
+        let indexPath = IndexPath(row: 2, section: 0)
         
         if let cell = tableView.cellForRow(at: indexPath) as? EditProfileTableViewCell {
             viewModel.bio = cell.textField.text
         }
     }
     @objc private func didUpdateLocation(){
-        let indexPath = IndexPath(row: 2, section: 0)
+        let indexPath = IndexPath(row: 3, section: 0)
         
         if let cell = tableView.cellForRow(at: indexPath) as? EditProfileTableViewCell {
             viewModel.location = cell.textField.text
         }
     }
     @objc private func didUpdateBirthDate(){
-        let indexPath = IndexPath(row: 4, section: 0)
+        let indexPath = IndexPath(row: 5, section: 0)
         
         if let cell = tableView.cellForRow(at: indexPath) as? EditProfileTableViewCell {
             viewModel.birthDate = cell.textField.text
         }
     }
     @objc private func didUpdateWebsite(){
-        let indexPath = IndexPath(row: 3, section: 0)
+        let indexPath = IndexPath(row: 4, section: 0)
         
         if let cell = tableView.cellForRow(at: indexPath) as? EditProfileTableViewCell {
             viewModel.website = cell.textField.text
@@ -169,32 +177,36 @@ extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource{
             cell.textField.placeholder = "Add your name"
             cell.textField.addTarget(self, action: #selector(didUpdateName), for: .editingChanged)
         case 1:
+            cell.title.text = "Username"
+            cell.textField.placeholder = "Add your username"
+            cell.textField.addTarget(self, action: #selector(didUpdateUsername), for: .editingChanged)
+        case 2:
             cell.title.text = "Bio"
             cell.textField.placeholder = "Add a Bio to your profile"
             cell.textField.addTarget(self, action: #selector(didUpdateBio), for: .editingChanged)
-        case 2:
+        case 3:
             cell.title.text = "Location"
             cell.textField.placeholder = "Add your location"
             cell.accessoryType = .disclosureIndicator
             cell.textField.addTarget(self, action: #selector(didUpdateLocation), for: .editingChanged)
-        case 3:
+        case 4:
             cell.title.text = "Website"
             cell.textField.placeholder = "Add your website"
             cell.accessoryType = .disclosureIndicator
             cell.textField.addTarget(self, action: #selector(didUpdateWebsite), for: .editingChanged)
-        case 4:
+        case 5:
             cell.title.text = "Birth date"
             cell.textField.placeholder = "Add your birth date"
             cell.textField.addTarget(self, action: #selector(didUpdateBirthDate), for: .editingChanged)
-        case 5:
+        case 6:
             cell.textLabel?.text = "Switch to Professional"
             cell.title.isHidden = true
             cell.textField.isHidden = true
             cell.accessoryType = .disclosureIndicator
-        case 6:
+        case 7:
             cell.title.isHidden = true
             cell.textField.isHidden = true
-        case 7:
+        case 8:
             cell.title.text = "Tips"
             cell.textField.isHidden = true
             cell.accessoryType = .disclosureIndicator
@@ -205,7 +217,7 @@ extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource{
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row{
-        case 1:
+        case 2:
             return 80
         case 6:
             return 30
@@ -252,6 +264,7 @@ extension EditProfileViewController: EditProfileDelegate, PHPickerViewController
                         case .avatarImageTap:
                             self?.headerView.avatarProfileImageView.image = image
                             self?.viewModel.avatarImageData = image
+                            self?.viewModel.validateUserProfile()
                         case .none: break
                             
                         }

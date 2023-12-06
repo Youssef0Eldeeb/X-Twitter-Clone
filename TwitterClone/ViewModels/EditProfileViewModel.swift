@@ -16,6 +16,7 @@ class EditProfileViewModel: ObservableObject{
     @Published var avatarPath: String?
     @Published var coverPath: String?
     @Published var name: String?
+    @Published var username: String?
     @Published var bio: String?
     @Published var location: String?
     @Published var website: String?
@@ -30,7 +31,10 @@ class EditProfileViewModel: ObservableObject{
     
     
     func validateUserProfile(){
-        guard let name = name, name.count > 2 else{
+        guard let name = name, name.count > 2,
+              let username = username, username.count > 2,
+              avatarImageData != nil
+        else{
             isFormValid = false
             return
         }
@@ -62,13 +66,14 @@ class EditProfileViewModel: ObservableObject{
     }
     private func updateUserData(){
         guard let name = name,
-              let bio = bio,
+              let username = username,
               let avatarPath = avatarPath,
               let id = Auth.auth().currentUser?.uid
         else { return }
         let updatedFields: [String: Any] = [
             "displayName": name,
-            "bio": bio,
+            "userName" : username,
+            "bio": bio ?? "",
             "avatarPath": avatarPath,
             "isUserOnboarded": true
         ]
