@@ -52,6 +52,16 @@ class DatabaseManager{
             }
             .eraseToAnyPublisher()
     }
+    func getCollectionAllTweets() -> AnyPublisher<[Tweet], Error>{
+        return Firestore.firestore().collection(FCollectionPath.Tweet.rawValue).getDocuments()
+            .tryMap(\.documents)
+            .tryMap { snapshots in
+                try snapshots.map{
+                    try $0.data(as: Tweet.self)
+                }
+            }
+            .eraseToAnyPublisher()
+    }
     
 }
 

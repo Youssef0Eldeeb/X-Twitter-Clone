@@ -35,8 +35,7 @@ class HomeViewModel: ObservableObject{
     }
     
     func fetchTweets(){
-        guard let userId = user?.id else {return}
-        DatabaseManager.shared.getCollectionTweets(retrevie: userId)
+        DatabaseManager.shared.getCollectionAllTweets()
             .sink { [weak self] completion in
                 if case .failure(let error) = completion{
                     self?.error = error.localizedDescription

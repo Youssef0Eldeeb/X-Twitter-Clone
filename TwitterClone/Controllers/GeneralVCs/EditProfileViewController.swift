@@ -158,6 +158,13 @@ class EditProfileViewController: UIViewController {
         
         
     }
+    private func setUserDataAsDefualtData(){
+        let indexPath = IndexPath(row: 3, section: 0)
+        
+        if let cell = tableView.cellForRow(at: indexPath) as? EditProfileTableViewCell{
+            
+        }
+    }
 
 }
 // MARK: - TableView Extension
