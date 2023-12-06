@@ -31,6 +31,7 @@ class DatabaseManager{
             .eraseToAnyPublisher()
     }
     func updateCollectionUser(updateFields: [String: Any], id: String) -> AnyPublisher<Bool, Error>{
+       return
         Firestore.firestore().collection(FCollectionPath.User.rawValue).document(id).updateData(updateFields)
             .map{ _ in true}
             .eraseToAnyPublisher()

@@ -11,7 +11,6 @@ import SDWebImage
 
 protocol ProfileDelegate {
     func EditDidTap()
-    func backDidTap()
 }
 
 class ProfileViewController: UIViewController {
@@ -36,6 +35,16 @@ class ProfileViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
+    private let backButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(systemName: "arrow.backward"), for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = UIColor(white: 0.6, alpha: 0.8)
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 15
+        return button
+    }()
     
     // MARK: - Methods
     override func viewDidLoad() {
@@ -48,12 +57,13 @@ class ProfileViewController: UIViewController {
         
         view.addSubview(profileTableVeiw)
         view.addSubview(statusBar)
+        view.addSubview(backButton)
                 
         headerView = ProfileTableViewHeader(frame: CGRect(x: 0, y: 0, width: profileTableVeiw.frame.width, height: 370))
         profileTableVeiw.tableHeaderView = headerView
         profileTableVeiw.contentInsetAdjustmentBehavior = .never
         navigationController?.navigationBar.isHidden = true
-        
+        backButton.addTarget(self, action: #selector(backBtnTap), for: .touchUpInside)
         configureConstraint()
         headerView.delegate = self
         bindView()
@@ -66,6 +76,9 @@ class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         viewModel.retreiveUser()
     }
+    @objc private func backBtnTap(){
+        self.navigationController?.popViewController(animated: true)
+    }
     private func configureConstraint(){
         let statusBarConstraints = [
             statusBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -73,7 +86,14 @@ class ProfileViewController: UIViewController {
             statusBar.topAnchor.constraint(equalTo: view.topAnchor),
             statusBar.heightAnchor.constraint(equalToConstant: view.bounds.height > 800 ? 40 : 20)
         ]
+        let backButtonConstraints = [
+            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 2),
+            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            backButton.widthAnchor.constraint(equalToConstant: 30),
+            backButton.heightAnchor.constraint(equalToConstant: 30)
+        ]
         NSLayoutConstraint.activate(statusBarConstraints)
+        NSLayoutConstraint.activate(backButtonConstraints)
     }
     private func bindView(){
         viewModel.$user.sink { [weak self] user in
@@ -137,9 +157,6 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
 }
 
 extension ProfileViewController: ProfileDelegate{
-    func backDidTap() {
-        self.navigationController?.popViewController(animated: true)
-    }
     
     func EditDidTap() {
         let vc = UINavigationController(rootViewController: EditProfileViewController())

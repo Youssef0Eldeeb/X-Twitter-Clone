@@ -51,16 +51,7 @@ class ProfileTableViewHeader: UIView {
     var delegate: ProfileDelegate!
     
     // MARK: - UI Components
-    private let backButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.imageView?.image = UIImage(systemName: "arrow.backward")
-        button.tintColor = .white
-        button.backgroundColor = .gray
-        button.layer.masksToBounds = true
-        button.layer.cornerRadius = 15
-        return button
-    }()
+
     var coverProfileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -195,7 +186,6 @@ class ProfileTableViewHeader: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.addSubview(backButton)
         self.addSubview(coverProfileImageView)
         self.addSubview(avatarProfileImageView)
         self.addSubview(editButton)
@@ -213,7 +203,6 @@ class ProfileTableViewHeader: UIView {
         
         configureConstraints()
         configureStackButtonsPressed()
-        backButton.addTarget(self, action: #selector(backBtnTap), for: .touchUpInside)
         editButton.addTarget(self, action: #selector(editBtnTap), for: .touchUpInside)
     }
     required init?(coder: NSCoder) {
@@ -232,9 +221,6 @@ class ProfileTableViewHeader: UIView {
             
             button.addTarget(self, action: #selector(didTap(_:)), for: .touchUpInside)
         }
-    }
-    @objc private func backBtnTap(){
-        delegate.backDidTap()
     }
     @objc private func editBtnTap(){
         delegate.EditDidTap()
@@ -259,12 +245,6 @@ class ProfileTableViewHeader: UIView {
     
     // MARK: - Constraints
     private func configureConstraints(){
-        let backButtonConstraints = [
-            backButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 20),
-            backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            backButton.widthAnchor.constraint(equalToConstant: 30),
-            backButton.heightAnchor.constraint(equalToConstant: 30)
-        ]
         let coverImageConstraints = [
             coverProfileImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             coverProfileImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
@@ -340,7 +320,6 @@ class ProfileTableViewHeader: UIView {
             indicator.heightAnchor.constraint(equalToConstant: 4)
         ]
         
-        NSLayoutConstraint.activate(backButtonConstraints)
         NSLayoutConstraint.activate(coverImageConstraints)
         NSLayoutConstraint.activate(avatarImageConstraints)
         NSLayoutConstraint.activate(editButtonConstraints)
