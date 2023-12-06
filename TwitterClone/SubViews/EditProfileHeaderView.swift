@@ -17,10 +17,11 @@ class EditProfileHeaderView: UIView {
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .darkGray
-        imageView.clipsToBounds = true
-        imageView.image = UIImage(systemName: "camera")
         imageView.tintColor = .white
+        imageView.clipsToBounds = true
+        //P1: placeholder of coverImageView
         imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(systemName: "camera", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 14)))
         imageView.isUserInteractionEnabled = true
         return imageView
     }()
@@ -30,8 +31,8 @@ class EditProfileHeaderView: UIView {
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 30
-        imageView.backgroundColor = .systemPurple
-        imageView.image = UIImage(systemName: "camera")
+        imageView.image = UIImage(systemName: "person.circle.fill")
+        imageView.backgroundColor = .darkGray
         imageView.tintColor = .white
         imageView.contentMode = .scaleAspectFill
         imageView.isUserInteractionEnabled = true

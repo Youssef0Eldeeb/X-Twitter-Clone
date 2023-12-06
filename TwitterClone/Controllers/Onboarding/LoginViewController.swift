@@ -13,7 +13,7 @@ class LoginViewController: UIViewController {
     private var viewModel = AuthenticationViewModel()
     private var subscriptions: Set<AnyCancellable> = []
     
-    // UI Components
+    // MARK: - UI Components
     private let loginTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false

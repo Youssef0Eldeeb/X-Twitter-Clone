@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 protocol TweetTableViewCellDelegate: AnyObject{
     func tweetTableViewCellDidTapReply()
@@ -33,7 +34,8 @@ class TweetTableViewCell: UITableViewCell {
         imageView.layer.masksToBounds = true
         imageView.clipsToBounds = true
         imageView.image = UIImage(systemName: "person")
-        imageView.backgroundColor = .blue
+        imageView.backgroundColor = .gray
+        imageView.tintColor = .white
         return imageView
     }()
     private let nameLabel: UILabel = {
@@ -125,7 +127,7 @@ class TweetTableViewCell: UITableViewCell {
         nameLabel.text = displayName
         userNameLabel.text = "@\(userName)"
         textContentlabel.text = tweetContent
-        avatarImageView.sd_setImage(with: URL(string: avatarPath))
+        avatarImageView.sd_setImage(with: URL(string: avatarPath), placeholderImage: UIImage(systemName: "person.circle.fill"))
     }
     
     private func configureConstraints(){

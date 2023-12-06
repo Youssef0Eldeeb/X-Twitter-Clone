@@ -42,9 +42,8 @@ class SettingViewController: UIViewController {
     private func handleAuthentication(){
         if Auth.auth().currentUser == nil {
             let vc = UINavigationController(rootViewController: OnboardingViewController())
-            vc.modalPresentationStyle = .fullScreen
-//            navigationController?.popViewController(animated: false)
-            present(vc, animated: false)
+            navigationController?.popViewController(animated: true)
+            SceneDelegate().window?.rootViewController = vc
         }
     }
     

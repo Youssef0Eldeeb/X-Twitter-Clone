@@ -107,8 +107,8 @@ class HomeViewController: UIViewController {
         }.store(in: &subscriptions)
     }
     private func completeUserOnboarding(){
-        let vc = EditProfileViewController()
-        present(vc, animated: true)
+        let vc = UINavigationController(rootViewController: EditProfileViewController())
+        self.present(vc, animated: true)
     }
     private func configureConstraints(){
         let tweetButtonConstraints = [

@@ -11,6 +11,7 @@ import SDWebImage
 
 protocol ProfileDelegate {
     func EditDidTap()
+    func backDidTap()
 }
 
 class ProfileViewController: UIViewController {
@@ -41,7 +42,6 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
-        navigationItem.title = "Profile"
         
         profileTableVeiw.delegate = self
         profileTableVeiw.dataSource = self
@@ -84,7 +84,12 @@ class ProfileViewController: UIViewController {
             self?.headerView.followersNumberLabel.text = "\(user.followersCount)"
             self?.headerView.followingNumberLabel.text = "\(user.followingCount)"
             self?.headerView.joinDateLabel.text = "Joined \(self?.viewModel.getFormattedDate(with: user.createdDate) ?? "")"
-            self?.headerView.avatarProfileImageView.sd_setImage(with: URL(string: user.avatarPath))
+            self?.headerView.avatarProfileImageView.sd_setImage(with: URL(string: user.avatarPath), placeholderImage: UIImage(systemName: "person.circle.fill"))
+        }.store(in: &subscriptions)
+        viewModel.$tweets.sink { [weak self] _ in
+            DispatchQueue.main.async {
+                self?.profileTableVeiw.reloadData()
+            }
         }.store(in: &subscriptions)
     }
     
@@ -94,14 +99,22 @@ class ProfileViewController: UIViewController {
 // MARK: - Extension + TableView
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        if viewModel.tweets.count <= 6 {
+            return viewModel.tweets.count
+        }else{
+             return 6
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TweetTableViewCell.identifier, for: indexPath) as? TweetTableViewCell else {
             return UITableViewCell()
         }
-        
+        let tweetModel = viewModel.tweets[indexPath.row]
+        cell.configureTweet(displayName: tweetModel.author.displayName,
+                            userName: tweetModel.author.userName,
+                            tweetContent: tweetModel.tweetContent,
+                            avatarPath: tweetModel.author.avatarPath)
         return cell
     }
     
@@ -124,6 +137,10 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
 }
 
 extension ProfileViewController: ProfileDelegate{
+    func backDidTap() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     func EditDidTap() {
         let vc = UINavigationController(rootViewController: EditProfileViewController())
         self.present(vc, animated: true)
