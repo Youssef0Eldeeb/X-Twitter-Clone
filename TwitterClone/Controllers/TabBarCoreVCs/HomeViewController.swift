@@ -37,27 +37,29 @@ class HomeViewController: UIViewController {
         button.layer.cornerRadius = 30
         return button
     }()
-    private let activityIndicator = UIActivityIndicatorView(style: .medium)
+    
+    private let refreshControl = UIRefreshControl()
     
     // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(timelineTableView)
         view.addSubview(tweetButton)
-        view.addSubview(activityIndicator)
-        activityIndicator.hidesWhenStopped = true
         
         timelineTableView.delegate = self
         timelineTableView.dataSource = self
         
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        timelineTableView.refreshControl = refreshControl
+        
         configureNavigationBar()
         configureConstraints()
         bindViews()
-        setupActivityIndicator()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
+        refreshControl.beginRefreshing()
         handleAuthentication()
         viewModel.retreiveUser()
     }
@@ -74,6 +76,13 @@ class HomeViewController: UIViewController {
         let vc = SettingViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
+    @objc func refreshData() {
+        viewModel.retreiveUser()
+        bindViews()
+        timelineTableView.reloadData()
+        refreshControl.endRefreshing()
+    }
+    
     private func configureNavigationBar(){
         let size: CGFloat = 28
         let logoImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: size, height: size))
@@ -107,6 +116,7 @@ class HomeViewController: UIViewController {
         viewModel.$tweets.sink { [weak self] _ in
             DispatchQueue.main.async {
                 self?.timelineTableView.reloadData()
+                self?.refreshControl.endRefreshing()
             }
         }.store(in: &subscriptions)
     }
@@ -121,18 +131,7 @@ class HomeViewController: UIViewController {
             tweetButton.widthAnchor.constraint(equalToConstant: 60),
             tweetButton.heightAnchor.constraint(equalToConstant: 60)
         ]
-        let activityIndicatorConstraints = [
-            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ]
         NSLayoutConstraint.activate(tweetButtonConstraints)
-        NSLayoutConstraint.activate(activityIndicatorConstraints)
-    }
-    private func setupActivityIndicator() {
-//        activityIndicator.center = CGPoint(x: view.frame.size.width / 2, y: view.frame.size.height - 30)
-        
-        
-        
     }
 
 }
@@ -153,21 +152,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
                             tweetContent: tweetModel.tweetContent,
                             avatarPath: tweetModel.author.avatarPath)
         return cell
-    }
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetThreshold: CGFloat = 20.0
-
-        if scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.frame.size.height - offsetThreshold {
-            // Start the activity indicator
-            activityIndicator.startAnimating()
-            viewModel.retreiveUser()
-            viewModel.$tweets.sink { [weak self] _ in
-                DispatchQueue.main.async {
-                    self?.timelineTableView.reloadData()
-                    self?.activityIndicator.stopAnimating()
-                }
-            }.store(in: &subscriptions)
-        }
     }
   
 }
