@@ -49,6 +49,9 @@ class EditProfileViewController: UIViewController {
     // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.isModalInPresentation = true
+        
         view.backgroundColor = .systemBackground
         view.addSubview(tableView)
         

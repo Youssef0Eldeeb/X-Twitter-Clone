@@ -40,7 +40,7 @@ class ProfileViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "arrow.backward"), for: .normal)
         button.tintColor = .white
-        button.backgroundColor = UIColor(white: 0.6, alpha: 0.8)
+        button.backgroundColor = UIColor(white: 0.2, alpha: 0.8)
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 15
         return button
@@ -87,7 +87,7 @@ class ProfileViewController: UIViewController {
             statusBar.heightAnchor.constraint(equalToConstant: view.bounds.height > 800 ? 40 : 20)
         ]
         let backButtonConstraints = [
-            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 2),
+            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             backButton.widthAnchor.constraint(equalToConstant: 30),
             backButton.heightAnchor.constraint(equalToConstant: 30)
