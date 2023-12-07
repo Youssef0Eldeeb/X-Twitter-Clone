@@ -8,6 +8,7 @@
 import UIKit
 import PhotosUI
 import Combine
+import SDWebImage
 
 protocol EditProfileDelegate{
     func coverImageDidTap()
@@ -51,6 +52,8 @@ class EditProfileViewController: UIViewController {
         super.viewDidLoad()
         
         self.isModalInPresentation = true
+        
+        viewModel.retreiveUser()
         
         view.backgroundColor = .systemBackground
         view.addSubview(tableView)
@@ -159,13 +162,25 @@ class EditProfileViewController: UIViewController {
             }
         }.store(in: &subscription)
         
+        viewModel.$user.sink { [weak self] user in
+            self?.setUserDataAsDefualtData(row: 0, updatedData: user?.displayName ?? "")
+            self?.setUserDataAsDefualtData(row: 1, updatedData: user?.userName ?? "")
+            self?.setUserDataAsDefualtData(row: 2, updatedData: user?.bio ?? "")
+            self?.headerView.avatarProfileImageView.sd_setImage(with: URL(string: user?.avatarPath ?? ""))
+            self?.viewModel.avatarImageData = self?.headerView.avatarProfileImageView.image
+            self?.viewModel.name = user?.displayName ?? ""
+            self?.viewModel.username = user?.userName ?? ""
+            self?.viewModel.bio = user?.bio ?? ""
+            self?.viewModel.validateUserProfile()
+        }.store(in: &subscription)
+        
         
     }
-    private func setUserDataAsDefualtData(){
-        let indexPath = IndexPath(row: 3, section: 0)
+    private func setUserDataAsDefualtData(row: Int, updatedData: String){
+        let indexPath = IndexPath(row: row, section: 0)
         
         if let cell = tableView.cellForRow(at: indexPath) as? EditProfileTableViewCell{
-            
+            cell.textField.text = updatedData
         }
     }
 
