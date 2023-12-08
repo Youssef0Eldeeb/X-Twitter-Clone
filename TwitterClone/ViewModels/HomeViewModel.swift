@@ -14,6 +14,8 @@ class HomeViewModel: ObservableObject{
     @Published var user: TwitterUser?
     @Published var error: String?
     @Published var tweets: [Tweet] = []
+    @Published var tweetId: String?
+    var likesCount: Int = 0
     
     private var subscriptions: Set<AnyCancellable> = []
     
@@ -44,6 +46,21 @@ class HomeViewModel: ObservableObject{
                 self?.tweets = receivedTweets
             }.store(in: &subscriptions)
 
+    }
+    func updateLikesCount(){
+        guard let id = tweetId else { return }
+        let updatedFields: [String: Any] = [
+            "likesCount": likesCount + 1
+        ]
+        DatabaseManager.shared.updateCollectionTweet(updateFields: updatedFields, id: id)
+            .sink(receiveCompletion: { [weak self] completion in
+                if case .failure(let error) = completion {
+                    print("error:\n" + error.localizedDescription)
+                    self?.error = error.localizedDescription
+                }
+            }, receiveValue: { [weak self] updated in
+                print(updated)
+            }).store(in: &subscriptions)
     }
     
     

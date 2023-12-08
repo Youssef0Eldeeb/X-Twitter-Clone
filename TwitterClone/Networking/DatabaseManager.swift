@@ -36,6 +36,12 @@ class DatabaseManager{
             .map{ _ in true}
             .eraseToAnyPublisher()
     }
+    func updateCollectionTweet(updateFields: [String: Any], id: String) -> AnyPublisher<Bool, Error>{
+       return
+        Firestore.firestore().collection(FCollectionPath.Tweet.rawValue).document(id).updateData(updateFields)
+            .map{ _ in true}
+            .eraseToAnyPublisher()
+    }
     func setCollectionTweets(add tweet: Tweet) -> AnyPublisher<Bool, Error>{
         return Firestore.firestore().collection(FCollectionPath.Tweet.rawValue).document(tweet.id).setData(from: tweet)
             .map { _ in

@@ -11,7 +11,7 @@ import SDWebImage
 protocol TweetTableViewCellDelegate: AnyObject{
     func tweetTableViewCellDidTapReply()
     func tweetTableViewCellDidTapRetweet()
-    func tweetTableViewCellDidTapLike()
+    func tweetTableViewCellDidTapLike(tag: Int)
     func tweetTableViewCellDidTapShare()
 }
 
@@ -71,7 +71,7 @@ class TweetTableViewCell: UITableViewCell {
         button.tintColor = .systemGray
         return button
     }()
-    private let likeButton: UIButton = {
+    var likeButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "heart"), for: .normal)
@@ -109,8 +109,8 @@ class TweetTableViewCell: UITableViewCell {
     @objc func retweetTaped(){
         delegate?.tweetTableViewCellDidTapRetweet()
     }
-    @objc func likeTapped(){
-        delegate?.tweetTableViewCellDidTapLike()
+    @objc func likeTapped(_ sender: UIButton){
+        delegate?.tweetTableViewCellDidTapLike(tag: sender.tag)
     }
     @objc func shareTapped(){
         delegate?.tweetTableViewCellDidTapShare()
@@ -119,7 +119,7 @@ class TweetTableViewCell: UITableViewCell {
     private func configureButtonsTaps(){
         replyButton.addTarget(self, action: #selector(replyTaped), for: .touchUpInside)
         retweetButton.addTarget(self, action: #selector(retweetTaped), for: .touchUpInside)
-        likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(likeTapped(_:)), for: .touchUpInside)
         shareButton.addTarget(self, action: #selector(shareTapped), for: .touchUpInside)
     }
     

@@ -14,7 +14,6 @@ class HomeViewController: UIViewController {
     private lazy var viewModel : HomeViewModel = {
        return HomeViewModel()
     }()
-    
     private var subscriptions: Set<AnyCancellable> = []
     // MARK: - UI Components
     private let timelineTableView: UITableView = {
@@ -119,6 +118,10 @@ class HomeViewController: UIViewController {
                 self?.refreshControl.endRefreshing()
             }
         }.store(in: &subscriptions)
+        viewModel.$error.sink { [weak self] error in
+            guard let error = error else {return}
+            UIAlertController.showAlert(msg: error, form: self!)
+        }.store(in: &subscriptions)
     }
     private func completeUserOnboarding(){
         let vc = UINavigationController(rootViewController: EditProfileViewController())
@@ -151,6 +154,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
                             userName: tweetModel.author.userName,
                             tweetContent: tweetModel.tweetContent,
                             avatarPath: tweetModel.author.avatarPath)
+        cell.likeButton.tag = indexPath.row
         return cell
     }
   
@@ -165,8 +169,9 @@ extension HomeViewController: TweetTableViewCellDelegate{
         print("retweet")
     }
     
-    func tweetTableViewCellDidTapLike() {
-        print("like")
+    func tweetTableViewCellDidTapLike(tag: Int) {
+        viewModel.tweetId = viewModel.tweets[tag].id
+        viewModel.updateLikesCount()
     }
     
     func tweetTableViewCellDidTapShare() {
