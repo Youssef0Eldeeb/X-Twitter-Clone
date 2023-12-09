@@ -155,8 +155,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
                             tweetContent: tweetModel.tweetContent,
                             avatarPath: tweetModel.author.avatarPath)
         cell.likeButton.tag = indexPath.row
+        print(indexPath.row)
+        //p: cashing of cell  when reload tableView index of cells change
+        if viewModel.likesTweetIds.contains(viewModel.tweets[indexPath.row].id){
+            cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            cell.likeButton.tintColor = .red
+        }
         return cell
     }
+    
   
 }
 
@@ -171,7 +178,8 @@ extension HomeViewController: TweetTableViewCellDelegate{
     
     func tweetTableViewCellDidTapLike(tag: Int) {
         viewModel.tweetId = viewModel.tweets[tag].id
-        viewModel.updateLikesCount()
+        viewModel.getSpecificTweet()
+//        timelineTableView.reloadData()
     }
     
     func tweetTableViewCellDidTapShare() {

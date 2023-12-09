@@ -15,7 +15,9 @@ class HomeViewModel: ObservableObject{
     @Published var error: String?
     @Published var tweets: [Tweet] = []
     @Published var tweetId: String?
-    var likesCount: Int = 0
+    @Published var likesCount: Int?
+    @Published var likers: [String]?
+    var likesTweetIds: [String] = []
     
     private var subscriptions: Set<AnyCancellable> = []
     
@@ -30,9 +32,7 @@ class HomeViewModel: ObservableObject{
                 if case .failure(let error) = completion{
                     self?.error = error.localizedDescription
                 }
-            } receiveValue: { [weak self] user in
-                self?.user = user
-            }.store(in: &subscriptions)
+            } receiveValue: { _ in}.store(in: &subscriptions)
 
     }
     
@@ -44,15 +44,20 @@ class HomeViewModel: ObservableObject{
                 }
             } receiveValue: { [weak self] receivedTweets in
                 self?.tweets = receivedTweets
+                self?.likesTweetIds = self?.getAllTweetsLikes(tweets: receivedTweets) ?? []
             }.store(in: &subscriptions)
 
     }
-    func updateLikesCount(){
-        guard let id = tweetId else { return }
+    func updateTweet(){
+        guard let userId = user?.id else { return }
+        guard let tweetId = tweetId else { return }
+        guard !(likers!.contains(userId)) else {return}
+        likers?.append(userId)
         let updatedFields: [String: Any] = [
-            "likesCount": likesCount + 1
+            "likesCount": (likesCount ?? 0) + 1,
+            "likers": likers ?? []
         ]
-        DatabaseManager.shared.updateCollectionTweet(updateFields: updatedFields, id: id)
+        DatabaseManager.shared.updateCollectionTweet(updateFields: updatedFields, id: tweetId)
             .sink(receiveCompletion: { [weak self] completion in
                 if case .failure(let error) = completion {
                     print("error:\n" + error.localizedDescription)
@@ -60,8 +65,35 @@ class HomeViewModel: ObservableObject{
                 }
             }, receiveValue: { [weak self] updated in
                 print(updated)
+                
             }).store(in: &subscriptions)
     }
+    func getSpecificTweet(){
+        guard let id = tweetId else { return }
+        DatabaseManager.shared.getCollectionSpecificTweet(tweetId: id)
+            .handleEvents(receiveOutput: { [weak self] tweet in
+                self?.likesCount = tweet.likesCount
+                self?.likers = tweet.likers
+                self?.updateTweet()
+            })
+            .sink(receiveCompletion: { [weak self] completion in
+                if case .failure(let error) = completion {
+                    self?.error = error.localizedDescription
+                }
+            }, receiveValue: { _ in }).store(in: &subscriptions)
+    }
+    
+    func getAllTweetsLikes(tweets: [Tweet]) -> [String]{
+        guard let userId = user?.id else { return []}
+        var likesTweets: [String] = []
+        for tweet in tweets {
+            if tweet.likers.contains(userId) {
+                likesTweets.append(tweet.id)
+            }
+        }
+        return likesTweets
+    }
+    
     
     
 }

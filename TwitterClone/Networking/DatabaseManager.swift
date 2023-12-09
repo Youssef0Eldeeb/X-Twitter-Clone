@@ -69,6 +69,13 @@ class DatabaseManager{
             }
             .eraseToAnyPublisher()
     }
+    func getCollectionSpecificTweet(tweetId: String) -> AnyPublisher<Tweet, Error>{
+        return Firestore.firestore().collection(FCollectionPath.Tweet.rawValue).document(tweetId).getDocument()
+            .tryMap {
+                try $0.data(as: Tweet.self)
+            }
+            .eraseToAnyPublisher()
+    }
     
 }
 
