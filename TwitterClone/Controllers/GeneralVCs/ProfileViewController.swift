@@ -45,6 +45,7 @@ class ProfileViewController: UIViewController {
         button.layer.cornerRadius = 15
         return button
     }()
+    private let refreshControl = UIRefreshControl()
     
     // MARK: - Methods
     override func viewDidLoad() {
@@ -58,6 +59,9 @@ class ProfileViewController: UIViewController {
         view.addSubview(profileTableVeiw)
         view.addSubview(statusBar)
         view.addSubview(backButton)
+        
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        profileTableVeiw.refreshControl = refreshControl
                 
         headerView = ProfileTableViewHeader(frame: CGRect(x: 0, y: 0, width: profileTableVeiw.frame.width, height: 370))
         profileTableVeiw.tableHeaderView = headerView
@@ -74,7 +78,14 @@ class ProfileViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        refreshControl.beginRefreshing()
         viewModel.retreiveUser()
+    }
+    @objc func refreshData() {
+        viewModel.retreiveUser()
+        bindView()
+        profileTableVeiw.reloadData()
+        refreshControl.endRefreshing()
     }
     @objc private func backBtnTap(){
         self.navigationController?.popViewController(animated: true)
@@ -105,10 +116,12 @@ class ProfileViewController: UIViewController {
             self?.headerView.followingNumberLabel.text = "\(user.followingCount)"
             self?.headerView.joinDateLabel.text = "Joined \(self?.viewModel.getFormattedDate(with: user.createdDate) ?? "")"
             self?.headerView.avatarProfileImageView.sd_setImage(with: URL(string: user.avatarPath), placeholderImage: UIImage(systemName: "person.circle.fill"))
+            self?.refreshControl.endRefreshing()
         }.store(in: &subscriptions)
         viewModel.$tweets.sink { [weak self] _ in
             DispatchQueue.main.async {
                 self?.profileTableVeiw.reloadData()
+                self?.refreshControl.endRefreshing()
             }
         }.store(in: &subscriptions)
     }

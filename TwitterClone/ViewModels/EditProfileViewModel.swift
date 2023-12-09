@@ -45,7 +45,8 @@ class EditProfileViewModel: ObservableObject{
     }
     
     func uploadAvatar(){
-        let randomId = UUID().uuidString
+        guard let userId = user?.id else {return}
+        let randomId = "avatar" + userId
         guard let imageData = avatarImageData?.jpegData(compressionQuality: 0.5) else{return}
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpeg"
@@ -58,6 +59,7 @@ class EditProfileViewModel: ObservableObject{
                 switch completion{
                 case .finished:
                     self?.updateUserData()
+                    self?.updateTweetData()
                 case .failure(let error):
                     self?.error = error.localizedDescription
                 }
@@ -70,7 +72,7 @@ class EditProfileViewModel: ObservableObject{
         guard let name = name,
               let username = username,
               let avatarPath = avatarPath,
-              let id = Auth.auth().currentUser?.uid
+              let id = user?.id
         else { return }
         let updatedFields: [String: Any] = [
             "displayName": name,
@@ -87,6 +89,36 @@ class EditProfileViewModel: ObservableObject{
                 }
             }, receiveValue: { [weak self] updated in
                 self?.isOnboarding = updated
+            }).store(in: &subscriptions)
+
+    }
+    private func updateTweetData(){
+        guard let name = name,
+              let username = username,
+              let avatarPath = avatarPath,
+              let user = user
+        else { return }
+        let updatedFields: [String: Any] = [
+            "author": [
+                "avatarPath": avatarPath,
+                "bio": bio ?? "",
+                "createdDate": user.createdDate,
+                "displayName": name,
+                "followersCount": user.followersCount,
+                "followingCount": user.followingCount,
+                "id": user.id,
+                "isUserOnboarded": user.isUserOnboarded,
+                "userName" : username
+            ] as [String : Any]
+        ]
+        DatabaseManager.shared.updateCollectionSpecificTweets(updateFields: updatedFields, id: user.id)
+            .sink(receiveCompletion: { [weak self] completion in
+                if case .failure(let error) = completion {
+                    print("error:\n" + error.localizedDescription)
+                    self?.error = error.localizedDescription
+                }
+            }, receiveValue: { [weak self] updated in
+               print(updated)
             }).store(in: &subscriptions)
 
     }

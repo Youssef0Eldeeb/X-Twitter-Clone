@@ -19,7 +19,7 @@ class EditProfileHeaderView: UIView {
         imageView.backgroundColor = .darkGray
         imageView.tintColor = .white
         imageView.clipsToBounds = true
-        //P1: placeholder of coverImageView
+        //p: placeholder of coverImageView
         imageView.contentMode = .scaleAspectFill
         imageView.image = UIImage(systemName: "camera", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 14)))
         imageView.isUserInteractionEnabled = true
