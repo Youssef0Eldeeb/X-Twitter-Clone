@@ -23,6 +23,7 @@ class DatabaseManager{
             }
             .eraseToAnyPublisher()
     }
+    
     func getCollectionUser(retrevie id: String) -> AnyPublisher<TwitterUser, Error>{
         return Firestore.firestore().collection(FCollectionPath.User.rawValue).document(id).getDocument()
             .tryMap {
@@ -30,18 +31,31 @@ class DatabaseManager{
             }
             .eraseToAnyPublisher()
     }
+    func getCollectionAllUser() -> AnyPublisher<[TwitterUser], Error>{
+        return Firestore.firestore().collection(FCollectionPath.User.rawValue).getDocuments()
+            .tryMap(\.documents)
+            .tryMap { snapshots in
+                try snapshots.map{
+                    try $0.data(as: TwitterUser.self)
+                }
+            }
+            .eraseToAnyPublisher()
+    }
+    
     func updateCollectionUser(updateFields: [String: Any], id: String) -> AnyPublisher<Bool, Error>{
        return
         Firestore.firestore().collection(FCollectionPath.User.rawValue).document(id).updateData(updateFields)
             .map{ _ in true}
             .eraseToAnyPublisher()
     }
+    
     func updateCollectionTweet(updateFields: [String: Any], id: String) -> AnyPublisher<Bool, Error>{
        return
         Firestore.firestore().collection(FCollectionPath.Tweet.rawValue).document(id).updateData(updateFields)
             .map{ _ in true}
             .eraseToAnyPublisher()
     }
+    
     func updateCollectionSpecificTweets(updateFields: [String: Any], id: String) -> AnyPublisher<Bool, Error>{
        return
         Firestore.firestore().collection(FCollectionPath.Tweet.rawValue).whereField("authorId", isEqualTo: id).getDocuments()
@@ -53,6 +67,7 @@ class DatabaseManager{
             .map{ _ in true}
             .eraseToAnyPublisher()
     }
+    
     func setCollectionTweets(add tweet: Tweet) -> AnyPublisher<Bool, Error>{
         return Firestore.firestore().collection(FCollectionPath.Tweet.rawValue).document(tweet.id).setData(from: tweet)
             .map { _ in
@@ -60,6 +75,7 @@ class DatabaseManager{
             }
             .eraseToAnyPublisher()
     }
+    
     func getCollectionTweets(retrevie id: String) -> AnyPublisher<[Tweet], Error>{
         return Firestore.firestore().collection(FCollectionPath.Tweet.rawValue).whereField("authorId", isEqualTo: id).getDocuments()
             .tryMap(\.documents)
@@ -70,6 +86,7 @@ class DatabaseManager{
             }
             .eraseToAnyPublisher()
     }
+    
     func getCollectionAllTweets() -> AnyPublisher<[Tweet], Error>{
         return Firestore.firestore().collection(FCollectionPath.Tweet.rawValue).getDocuments()
             .tryMap(\.documents)
@@ -80,6 +97,7 @@ class DatabaseManager{
             }
             .eraseToAnyPublisher()
     }
+    
     func getCollectionSpecificTweet(tweetId: String) -> AnyPublisher<Tweet, Error>{
         return Firestore.firestore().collection(FCollectionPath.Tweet.rawValue).document(tweetId).getDocument()
             .tryMap {

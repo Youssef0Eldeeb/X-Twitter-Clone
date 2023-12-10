@@ -78,8 +78,8 @@ class HomeViewController: UIViewController {
     @objc func refreshData() {
         viewModel.retreiveUser()
         bindViews()
-        timelineTableView.reloadData()
-        refreshControl.endRefreshing()
+//        timelineTableView.reloadData()
+//        refreshControl.endRefreshing()
     }
     
     private func configureNavigationBar(){
@@ -179,7 +179,7 @@ extension HomeViewController: TweetTableViewCellDelegate{
     func tweetTableViewCellDidTapLike(tag: Int) {
         viewModel.tweetId = viewModel.tweets[tag].id
         viewModel.getSpecificTweet()
-//        timelineTableView.reloadData()
+        timelineTableView.reloadData()
     }
     
     func tweetTableViewCellDidTapShare() {
