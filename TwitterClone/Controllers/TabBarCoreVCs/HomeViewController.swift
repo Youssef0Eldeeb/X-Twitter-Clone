@@ -8,9 +8,11 @@
 import UIKit
 import FirebaseAuth
 import Combine
+import SDWebImage
 
 class HomeViewController: UIViewController {
 
+    private var avatarPath: String = ""
     private lazy var viewModel : HomeViewModel = {
        return HomeViewModel()
     }()
@@ -36,6 +38,22 @@ class HomeViewController: UIViewController {
         button.layer.cornerRadius = 30
         return button
     }()
+    
+
+    private lazy var profileBarButton: UIBarButtonItem = {
+        let customView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        customView.layer.masksToBounds = true
+        customView.layer.cornerRadius = 15
+        
+        let button = UIButton(frame: customView.bounds)
+        button.addTarget(self, action: #selector(profileTap), for: .touchUpInside)
+        button.sd_setImage(with: URL(string: avatarPath), for: .normal, placeholderImage: UIImage(systemName: "person"))
+        customView.addSubview(button)
+        
+        let customBarButtonItem = UIBarButtonItem(customView: customView)
+        return customBarButtonItem
+    }()
+    
     
     private let refreshControl = UIRefreshControl()
     
@@ -92,11 +110,10 @@ class HomeViewController: UIViewController {
         middelView.addSubview(logoImageView)
         navigationItem.titleView = middelView
         
-        let profileImage = UIImage(systemName: "person")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: profileImage, style: .plain, target: self, action: #selector(profileTap))
-        
         let settingImage = UIImage(systemName: "gearshape")
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: settingImage, style: .plain, target: self, action: #selector(settingTap))
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .plain, target: self, action: #selector(profileTap))
     }
     private func handleAuthentication(){
         if Auth.auth().currentUser == nil {
@@ -111,6 +128,8 @@ class HomeViewController: UIViewController {
             if !user.isUserOnboarded {
                 self?.completeUserOnboarding()
             }
+            self?.avatarPath = user.avatarPath
+            self?.navigationItem.leftBarButtonItem = self?.profileBarButton
         }.store(in: &subscriptions)
         viewModel.$tweets.sink { [weak self] _ in
             DispatchQueue.main.async {
