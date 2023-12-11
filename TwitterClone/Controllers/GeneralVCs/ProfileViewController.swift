@@ -10,20 +10,17 @@ import Combine
 import SDWebImage
 import FirebaseAuth
 
-protocol ProfileDelegate {
-    func EditDidTap()
-}
-
 class ProfileViewController: UIViewController {
 
     private var isStatusBarHidden: Bool = true
-    var headerView: ProfileTableViewHeader!
+    var headerView: ProfileTableViewHeader
     var viewModel = ProfileViewModel()
     private var subscriptions: Set<AnyCancellable> = []
     var id: String
     
-    init(id: String){
+    init(id: String, headerView: ProfileTableViewHeader){
         self.id = id
+        self.headerView = headerView
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -75,13 +72,11 @@ class ProfileViewController: UIViewController {
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         profileTableVeiw.refreshControl = refreshControl
                 
-        headerView = ProfileTableViewHeader(frame: CGRect(x: 0, y: 0, width: profileTableVeiw.frame.width, height: 370))
         profileTableVeiw.tableHeaderView = headerView
         profileTableVeiw.contentInsetAdjustmentBehavior = .never
         navigationController?.navigationBar.isHidden = true
         backButton.addTarget(self, action: #selector(backBtnTap), for: .touchUpInside)
         configureConstraint()
-        headerView.delegate = self
         bindView()
     }
     override func viewDidLayoutSubviews() {
@@ -177,15 +172,6 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
                 self?.statusBar.layer.opacity = 0
             }
         }
-    }
-    
-}
-
-extension ProfileViewController: ProfileDelegate{
-    
-    func EditDidTap() {
-        let vc = UINavigationController(rootViewController: EditProfileViewController())
-        self.present(vc, animated: true)
     }
     
 }

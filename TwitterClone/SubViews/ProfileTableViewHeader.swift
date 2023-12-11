@@ -48,7 +48,6 @@ class ProfileTableViewHeader: UIView {
     
     private var leadingAnchors: [NSLayoutConstraint] = []
     private var trailingAnchors: [NSLayoutConstraint] = []
-    var delegate: ProfileDelegate!
     
     // MARK: - UI Components
 
@@ -73,10 +72,10 @@ class ProfileTableViewHeader: UIView {
         imageView.tintColor = .white
         return imageView
     }()
-    var editButton: UIButton = {
+    lazy var editButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Edit profile", for: .normal)
+        button.setTitle("Edit Profile", for: .normal)
         button.tintColor = .label
         button.titleLabel?.font = .systemFont(ofSize: 12, weight: .semibold)
         button.backgroundColor = .systemBackground
@@ -203,7 +202,6 @@ class ProfileTableViewHeader: UIView {
         
         configureConstraints()
         configureStackButtonsPressed()
-        editButton.addTarget(self, action: #selector(editBtnTap), for: .touchUpInside)
     }
     required init?(coder: NSCoder) {
         fatalError()
@@ -221,9 +219,6 @@ class ProfileTableViewHeader: UIView {
             
             button.addTarget(self, action: #selector(didTap(_:)), for: .touchUpInside)
         }
-    }
-    @objc private func editBtnTap(){
-        delegate.EditDidTap()
     }
     @objc private func didTap(_ sender: UIButton) {
         guard let label = sender.titleLabel?.text else {return}

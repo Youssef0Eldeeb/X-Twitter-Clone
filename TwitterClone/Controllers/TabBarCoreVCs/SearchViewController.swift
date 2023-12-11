@@ -43,6 +43,9 @@ class SearchViewController: UIViewController {
         super.viewDidLayoutSubviews()
         searchTableView.frame = view.frame
     }
+    @objc func followUser(){
+        print("followwwwwwwwwwwwww")
+    }
     private func bindView(){
         viewModel.$users.sink { [weak self] users in
             self?.originalUsersArray = users ?? []
@@ -72,7 +75,10 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISe
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = ProfileViewController(id: "kOy3UkFJRyQEkaFES4YnnbYadk92")
+        let header = ProfileTableViewHeader(frame: CGRect(x: 0, y: 0, width: searchTableView.frame.width, height: 370))
+        header.editButton.setTitle("Follow", for: .normal)
+        header.editButton.addTarget(self, action: #selector(followUser), for: .touchUpInside)
+        let vc = ProfileViewController(id: "kOy3UkFJRyQEkaFES4YnnbYadk92",headerView: header)
         
         navigationController?.pushViewController(vc, animated: true)
         
