@@ -9,13 +9,12 @@ import Foundation
 import Combine
 
 final class SearchViewModel: ObservableObject{
-    var users: [TwitterUser]?
+    @Published var users: [TwitterUser]?
     @Published var error: String?
-    @Published var usersNames: [String]?
     
     private var subscriptions: Set<AnyCancellable> = []
     
-    func retreiveUser(){
+    func retreiveAllUser(){
         DatabaseManager.shared.getCollectionAllUser()
             .sink { [weak self] completion in
                 if case .failure(let error) = completion{
@@ -23,13 +22,7 @@ final class SearchViewModel: ObservableObject{
                 }
             } receiveValue: { [weak self] users in
                 self?.users = users
-                self?.getNamesOfUsers()
             }.store(in: &subscriptions)
-    }
-    func getNamesOfUsers(){
-        usersNames = users?.map({ user in
-            user.displayName
-        })
     }
     
 }

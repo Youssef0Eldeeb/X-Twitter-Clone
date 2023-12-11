@@ -14,10 +14,11 @@ final class ProfileViewModel: ObservableObject{
     @Published var error: String?
     @Published var tweets: [Tweet] = []
     
+    
     private var subscriptions: Set<AnyCancellable> = []
     
-    func retreiveUser(){
-        guard let id = Auth.auth().currentUser?.uid else { return }
+    func retreiveUser(id: String){
+//        guard let id = Auth.auth().currentUser?.uid else { return }
         DatabaseManager.shared.getCollectionUser(retrevie: id)
             .handleEvents(receiveOutput: { [weak self] user in
                 self?.user = user

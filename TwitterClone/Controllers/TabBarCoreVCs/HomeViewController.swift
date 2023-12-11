@@ -86,7 +86,8 @@ class HomeViewController: UIViewController {
     }
     
     @objc func profileTap(){
-        let vc = ProfileViewController()
+        guard let id = Auth.auth().currentUser?.uid else{return}
+        let vc = ProfileViewController(id: id)
         navigationController?.pushViewController(vc, animated: true)
     }
     @objc func settingTap(){

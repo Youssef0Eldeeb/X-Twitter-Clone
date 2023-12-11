@@ -73,7 +73,7 @@ class ProfileTableViewHeader: UIView {
         imageView.tintColor = .white
         return imageView
     }()
-    private let editButton: UIButton = {
+    var editButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Edit profile", for: .normal)

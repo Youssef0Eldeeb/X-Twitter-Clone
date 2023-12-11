@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 import SDWebImage
+import FirebaseAuth
 
 protocol ProfileDelegate {
     func EditDidTap()
@@ -16,9 +17,20 @@ protocol ProfileDelegate {
 class ProfileViewController: UIViewController {
 
     private var isStatusBarHidden: Bool = true
-    private var headerView: ProfileTableViewHeader!
-    private var viewModel = ProfileViewModel()
+    var headerView: ProfileTableViewHeader!
+    var viewModel = ProfileViewModel()
     private var subscriptions: Set<AnyCancellable> = []
+    var id: String
+    
+    init(id: String){
+        self.id = id
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - UI Components
     private let statusBar: UIView = {
@@ -79,10 +91,10 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         refreshControl.beginRefreshing()
-        viewModel.retreiveUser()
+        viewModel.retreiveUser(id: id)
     }
     @objc func refreshData() {
-        viewModel.retreiveUser()
+        viewModel.retreiveUser(id: id)
         bindView()
         profileTableVeiw.reloadData()
         refreshControl.endRefreshing()
