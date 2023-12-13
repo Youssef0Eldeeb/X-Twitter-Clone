@@ -40,7 +40,6 @@ class SearchViewController: UIViewController {
         searchBar.delegate = self
         navigationItem.titleView = searchBar
         
-        viewModel.retreiveAllUser()
         bindView()
     }
     override func viewDidLayoutSubviews() {
@@ -49,6 +48,7 @@ class SearchViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
+        viewModel.retreiveAllUser()
     }
     @objc func editDidTap() {
         let vc = UINavigationController(rootViewController: EditProfileViewController())
@@ -65,12 +65,10 @@ class SearchViewController: UIViewController {
         guard let myId = self.myId else { return }
         guard let selectedUser = selectedUser else {return}
         
-        let newFollowersNumber = (selectedUser.followersCount) + 1
         let myData: [TwitterUser] = originalArray.filter{ $0.id == myId}
-        let myNewFollowingNumber = myData[0].followingCount + 1
         
-        viewModel.updateUserData(userId: selectedUser.id, followersCount: newFollowersNumber, followingCount: selectedUser.followingCount)
-        viewModel.updateUserData(userId: myId, followersCount: myData[0].followersCount, followingCount: myNewFollowingNumber)
+        viewModel.updateUserData(selectedUser: selectedUser, myData: myData[0])
+        
         self.header?.editButton.setTitle("Following", for: .normal)
         self.header?.editButton.backgroundColor = .systemBackground
         self.header?.editButton.tintColor = .label

@@ -122,7 +122,9 @@ class HomeViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .plain, target: self, action: #selector(profileTap))
     }
     private func handleAuthentication(){
+//        print("Not founded \(Auth.auth().currentUser?.uid)")
         if Auth.auth().currentUser == nil {
+//            print("founded \(Auth.auth().currentUser?.uid)")
             let vc = UINavigationController(rootViewController: OnboardingViewController())
             vc.modalPresentationStyle = .fullScreen
             present(vc, animated: false)

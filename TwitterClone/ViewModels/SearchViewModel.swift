@@ -25,19 +25,42 @@ final class SearchViewModel: ObservableObject{
                 self?.users = users
             }.store(in: &subscriptions)
     }
-    func updateUserData(userId: String, followersCount: Int, followingCount: Int){
-        let updatedFields: [String: Any] = [
-            "followersCount": followersCount,
-            "followingCount": followingCount
+    func updateUserData(selectedUser: TwitterUser, myData: TwitterUser){
+        var selectedUser = selectedUser
+        var myData = myData
+        
+        let userFollowersNumber = (selectedUser.followersCount) + 1
+        selectedUser.followers.append(myData.id)
+        let myFollowingNumber = (myData.followingCount) + 1
+        myData.followings.append(selectedUser.id)
+        
+        let updatedSelectedUserFields: [String: Any] = [
+            "followersCount": userFollowersNumber,
+            "followingCount": selectedUser.followingCount,
+            "followers": selectedUser.followers,
+            "followings": selectedUser.followings
         ]
-        DatabaseManager.shared.updateCollectionUser(updateFields: updatedFields, id: userId)
+        let updatedMyDataFields: [String: Any] = [
+            "followersCount": myData.followersCount,
+            "followingCount": myFollowingNumber,
+            "followers": myData.followers,
+            "followings": myData.followings
+        ]
+        DatabaseManager.shared.updateCollectionUser(updateFields: updatedSelectedUserFields, id: selectedUser.id)
             .sink(receiveCompletion: { [weak self] completion in
                 if case .failure(let error) = completion {
                     print("error:\n" + error.localizedDescription)
                     self?.error = error.localizedDescription
                 }
-            }, receiveValue: { [weak self] updated in
-                print(updated)
+            }, receiveValue: { _ in
+            }).store(in: &subscriptions)
+        DatabaseManager.shared.updateCollectionUser(updateFields: updatedMyDataFields, id: myData.id)
+            .sink(receiveCompletion: { [weak self] completion in
+                if case .failure(let error) = completion {
+                    print("error:\n" + error.localizedDescription)
+                    self?.error = error.localizedDescription
+                }
+            }, receiveValue: { _ in
             }).store(in: &subscriptions)
 
     }
