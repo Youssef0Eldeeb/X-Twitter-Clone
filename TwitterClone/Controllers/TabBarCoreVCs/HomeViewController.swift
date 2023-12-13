@@ -180,11 +180,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
                             tweetContent: tweetModel.tweetContent,
                             avatarPath: tweetModel.author.avatarPath)
         cell.likeButton.tag = indexPath.row
-//        print(indexPath.row)
-//        print(tweetModel.id)
-        //p: cashing of cell  when reload tableView index of cells change
         if viewModel.likesTweetIds.contains(tweetModel.id){
-            print("change likes in this tweet: \(indexPath.row) and its id is: \(tweetModel.id)")
+//            print("change likes in this tweet: \(indexPath.row) and its id is: \(tweetModel.id)")
             cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
             cell.likeButton.tintColor = .red
         }else{

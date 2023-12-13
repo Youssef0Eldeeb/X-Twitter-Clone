@@ -104,15 +104,45 @@ class TweetTableViewCell: UITableViewCell {
         fatalError()
     }
     @objc func replyTaped(){
+        UIView.animate(withDuration: 0.3) {
+            self.replyButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.3) {
+                self.replyButton.transform = CGAffineTransform.identity
+            }
+        }
         delegate?.tweetTableViewCellDidTapReply()
     }
     @objc func retweetTaped(){
+        UIView.animate(withDuration: 0.3) {
+            self.retweetButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.3) {
+                self.retweetButton.transform = CGAffineTransform.identity
+            }
+        }
         delegate?.tweetTableViewCellDidTapRetweet()
     }
     @objc func likeTapped(_ sender: UIButton){
-        delegate?.tweetTableViewCellDidTapLike(tag: sender.tag)
+        UIView.animate(withDuration: 0.3) {
+            self.likeButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            self.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            self.likeButton.tintColor = .red
+            self.delegate?.tweetTableViewCellDidTapLike(tag: sender.tag)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.3) {
+                self.likeButton.transform = CGAffineTransform.identity
+            }
+        }  
     }
     @objc func shareTapped(){
+        UIView.animate(withDuration: 0.3) {
+            self.shareButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.3) {
+                self.shareButton.transform = CGAffineTransform.identity
+            }
+        }
         delegate?.tweetTableViewCellDidTapShare()
     }
     
