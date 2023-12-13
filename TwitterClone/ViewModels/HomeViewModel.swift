@@ -63,9 +63,8 @@ class HomeViewModel: ObservableObject{
                     print("error:\n" + error.localizedDescription)
                     self?.error = error.localizedDescription
                 }
-            }, receiveValue: { [weak self] updated in
-                print(updated)
-                
+            }, receiveValue: { [weak self] _ in
+                self?.fetchTweets()
             }).store(in: &subscriptions)
     }
     func getSpecificTweet(){

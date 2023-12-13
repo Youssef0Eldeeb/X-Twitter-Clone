@@ -14,6 +14,8 @@ class SearchViewController: UIViewController {
     private var originalArray: [TwitterUser] = []
     private var filteredArray: [TwitterUser] = []
     var selectedUser: TwitterUser?
+    let myId = Auth.auth().currentUser?.uid
+    var header: ProfileTableViewHeader?
 
     private var viewModel = SearchViewModel()
     private var subscriptions: Set<AnyCancellable> = []
@@ -48,18 +50,30 @@ class SearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
     }
+    @objc func editDidTap() {
+        let vc = UINavigationController(rootViewController: EditProfileViewController())
+        self.present(vc, animated: true)
+    }
     @objc func followUser(){
-        print("followwwwwwwwwwwwww")
-        guard let myId = Auth.auth().currentUser?.uid else { return }
-        
+        UIView.animate(withDuration: 0.3) {
+            self.header?.editButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.3) {
+                self.header?.editButton.transform = CGAffineTransform.identity
+            }
+        }
+        guard let myId = self.myId else { return }
         guard let selectedUser = selectedUser else {return}
+        
         let newFollowersNumber = (selectedUser.followersCount) + 1
         let myData: [TwitterUser] = originalArray.filter{ $0.id == myId}
         let myNewFollowingNumber = myData[0].followingCount + 1
-        print(myNewFollowingNumber)
-        print(newFollowersNumber)
+        
         viewModel.updateUserData(userId: selectedUser.id, followersCount: newFollowersNumber, followingCount: selectedUser.followingCount)
         viewModel.updateUserData(userId: myId, followersCount: myData[0].followersCount, followingCount: myNewFollowingNumber)
+        self.header?.editButton.setTitle("Following", for: .normal)
+        self.header?.editButton.backgroundColor = .systemBackground
+        self.header?.editButton.tintColor = .label
         
         
     }
@@ -91,13 +105,18 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISe
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let header = ProfileTableViewHeader(frame: CGRect(x: 0, y: 0, width: searchTableView.frame.width, height: 370))
-        header.editButton.setTitle("Follow", for: .normal)
-        header.editButton.backgroundColor = .label
-        header.editButton.tintColor = .systemBackground
-        header.editButton.addTarget(self, action: #selector(followUser), for: .touchUpInside)
+        header = ProfileTableViewHeader(frame: CGRect(x: 0, y: 0, width: searchTableView.frame.width, height: 370))
         selectedUser = filteredArray[indexPath.row]
-        let vc = ProfileViewController(id: selectedUser?.id ?? "", headerView: header)
+        if (selectedUser?.id == myId) {
+            header?.editButton.addTarget(self, action: #selector(editDidTap), for: .touchUpInside)
+        }else{
+            header?.editButton.setTitle("Follow", for: .normal)
+            header?.editButton.backgroundColor = .label
+            header?.editButton.tintColor = .systemBackground
+            header?.editButton.addTarget(self, action: #selector(followUser), for: .touchUpInside)
+        }
+        
+        let vc = ProfileViewController(id: selectedUser?.id ?? "", headerView: header ?? ProfileTableViewHeader())
         
         navigationController?.pushViewController(vc, animated: true)
         
