@@ -29,6 +29,8 @@ final class SearchViewModel: ObservableObject{
         var selectedUser = selectedUser
         var myData = myData
         
+        guard !(myData.followings.contains(selectedUser.id)) else {return}
+        
         let userFollowersNumber = (selectedUser.followersCount) + 1
         selectedUser.followers.append(myData.id)
         let myFollowingNumber = (myData.followingCount) + 1

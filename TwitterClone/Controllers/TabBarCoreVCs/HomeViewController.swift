@@ -12,7 +12,6 @@ import SDWebImage
 
 class HomeViewController: UIViewController {
 
-    private var avatarPath: String = ""
     private lazy var viewModel : HomeViewModel = {
        return HomeViewModel()
     }()
@@ -40,7 +39,7 @@ class HomeViewController: UIViewController {
     }()
     
 
-    private lazy var profileBarButton: UIBarButtonItem = {
+    private func profileBarButton(avatarPath: String) -> UIBarButtonItem {
         let customView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         customView.layer.masksToBounds = true
         customView.layer.cornerRadius = 15
@@ -52,7 +51,7 @@ class HomeViewController: UIViewController {
         
         let customBarButtonItem = UIBarButtonItem(customView: customView)
         return customBarButtonItem
-    }()
+    }
     
     
     private let refreshControl = UIRefreshControl()
@@ -71,7 +70,7 @@ class HomeViewController: UIViewController {
         
         configureNavigationBar()
         configureConstraints()
-        bindViews()
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -79,6 +78,7 @@ class HomeViewController: UIViewController {
         refreshControl.beginRefreshing()
         handleAuthentication()
         viewModel.retreiveUser()
+        bindViews()
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -136,8 +136,7 @@ class HomeViewController: UIViewController {
             if !user.isUserOnboarded {
                 self?.completeUserOnboarding()
             }
-            self?.avatarPath = user.avatarPath
-            self?.navigationItem.leftBarButtonItem = self?.profileBarButton
+            self?.navigationItem.leftBarButtonItem = self?.profileBarButton(avatarPath: user.avatarPath)
         }.store(in: &subscriptions)
         viewModel.$tweets.sink { [weak self] _ in
             DispatchQueue.main.async {

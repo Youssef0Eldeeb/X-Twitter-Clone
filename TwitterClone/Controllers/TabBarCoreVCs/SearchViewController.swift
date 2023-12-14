@@ -14,7 +14,7 @@ class SearchViewController: UIViewController {
     private var originalArray: [TwitterUser] = []
     private var filteredArray: [TwitterUser] = []
     var selectedUser: TwitterUser?
-    let myId = Auth.auth().currentUser?.uid
+    var myId: String?
     var header: ProfileTableViewHeader?
 
     private var viewModel = SearchViewModel()
@@ -48,6 +48,7 @@ class SearchViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
+        myId = Auth.auth().currentUser?.uid
         viewModel.retreiveAllUser()
     }
     @objc func editDidTap() {
@@ -63,8 +64,8 @@ class SearchViewController: UIViewController {
             }
         }
         guard let myId = self.myId else { return }
-        guard let selectedUser = selectedUser else {return}
-        
+        guard let selectedUser = selectedUser else { return }
+        guard !(selectedUser.followers.contains(myId)) else { return }
         let myData: [TwitterUser] = originalArray.filter{ $0.id == myId}
         
         viewModel.updateUserData(selectedUser: selectedUser, myData: myData[0])
@@ -72,12 +73,15 @@ class SearchViewController: UIViewController {
         self.header?.editButton.setTitle("Following", for: .normal)
         self.header?.editButton.backgroundColor = .systemBackground
         self.header?.editButton.tintColor = .label
+        viewModel.retreiveAllUser()
         
         
     }
     private func bindView(){
         viewModel.$users.sink { [weak self] users in
             self?.originalArray = users ?? []
+            self?.filteredArray = []
+            self?.searchTableView.reloadData()
         }.store(in: &subscriptions)
     }
 
@@ -105,16 +109,24 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISe
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         header = ProfileTableViewHeader(frame: CGRect(x: 0, y: 0, width: searchTableView.frame.width, height: 370))
         selectedUser = filteredArray[indexPath.row]
-        if (selectedUser?.id == myId) {
+        guard let myId = self.myId else { return }
+        guard let selectedUser = selectedUser else {return}
+        if (selectedUser.id == myId) {
             header?.editButton.addTarget(self, action: #selector(editDidTap), for: .touchUpInside)
         }else{
-            header?.editButton.setTitle("Follow", for: .normal)
-            header?.editButton.backgroundColor = .label
-            header?.editButton.tintColor = .systemBackground
+            if selectedUser.followers.contains(myId) {
+                header?.editButton.setTitle("Following", for: .normal)
+                header?.editButton.backgroundColor = .systemBackground
+                header?.editButton.tintColor = .label
+            }else{
+                header?.editButton.setTitle("Follow", for: .normal)
+                header?.editButton.backgroundColor = .label
+                header?.editButton.tintColor = .systemBackground
+            }
             header?.editButton.addTarget(self, action: #selector(followUser), for: .touchUpInside)
         }
         
-        let vc = ProfileViewController(id: selectedUser?.id ?? "", headerView: header ?? ProfileTableViewHeader())
+        let vc = ProfileViewController(id: selectedUser.id, headerView: header ?? ProfileTableViewHeader())
         
         navigationController?.pushViewController(vc, animated: true)
         
