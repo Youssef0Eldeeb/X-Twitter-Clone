@@ -15,7 +15,7 @@ class SearchViewController: UIViewController {
     private var filteredArray: [TwitterUser] = []
     var selectedUser: TwitterUser?
     var myId: String?
-    var header: ProfileTableViewHeader?
+    var header = ProfileTableViewHeader()
 
     private var viewModel = SearchViewModel()
     private var subscriptions: Set<AnyCancellable> = []
@@ -52,15 +52,15 @@ class SearchViewController: UIViewController {
         viewModel.retreiveAllUser()
     }
     @objc func editDidTap() {
-        let vc = UINavigationController(rootViewController: EditProfileViewController())
+        let vc = UINavigationController(rootViewController: EditProfileViewController(user: selectedUser ?? TwitterUser(from: Auth.auth().currentUser!)))
         self.present(vc, animated: true)
     }
     @objc func followUser(){
         UIView.animate(withDuration: 0.3) {
-            self.header?.editButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            self.header.editButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         } completion: { _ in
             UIView.animate(withDuration: 0.3) {
-                self.header?.editButton.transform = CGAffineTransform.identity
+                self.header.editButton.transform = CGAffineTransform.identity
             }
         }
         guard let myId = self.myId else { return }
@@ -70,9 +70,9 @@ class SearchViewController: UIViewController {
         
         viewModel.updateUserData(selectedUser: selectedUser, myData: myData[0])
         
-        self.header?.editButton.setTitle("Following", for: .normal)
-        self.header?.editButton.backgroundColor = .systemBackground
-        self.header?.editButton.tintColor = .label
+        self.header.editButton.setTitle("Following", for: .normal)
+        self.header.editButton.backgroundColor = .systemBackground
+        self.header.editButton.tintColor = .label
         viewModel.retreiveAllUser()
         
         
@@ -107,26 +107,30 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISe
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        header = ProfileTableViewHeader(frame: CGRect(x: 0, y: 0, width: searchTableView.frame.width, height: 370))
+
         selectedUser = filteredArray[indexPath.row]
         guard let myId = self.myId else { return }
         guard let selectedUser = selectedUser else {return}
         if (selectedUser.id == myId) {
-            header?.editButton.addTarget(self, action: #selector(editDidTap), for: .touchUpInside)
+            header.editButton.setTitle("Edit profile", for: .normal)
+            header.editButton.backgroundColor = .systemBackground
+            header.editButton.tintColor = .label
+            header.editButton.addTarget(self, action: #selector(editDidTap), for: .touchUpInside)
         }else{
             if selectedUser.followers.contains(myId) {
-                header?.editButton.setTitle("Following", for: .normal)
-                header?.editButton.backgroundColor = .systemBackground
-                header?.editButton.tintColor = .label
+                header.editButton.setTitle("Following", for: .normal)
+                header.editButton.backgroundColor = .systemBackground
+                header.editButton.tintColor = .label
             }else{
-                header?.editButton.setTitle("Follow", for: .normal)
-                header?.editButton.backgroundColor = .label
-                header?.editButton.tintColor = .systemBackground
+                header.editButton.setTitle("Follow", for: .normal)
+                header.editButton.backgroundColor = .label
+                header.editButton.tintColor = .systemBackground
             }
-            header?.editButton.addTarget(self, action: #selector(followUser), for: .touchUpInside)
+            header.editButton.addTarget(self, action: #selector(followUser), for: .touchUpInside)
         }
         
-        let vc = ProfileViewController(id: selectedUser.id, headerView: header ?? ProfileTableViewHeader())
+        let vc = ProfileViewController(user: selectedUser)
+        vc.headerView = self.header
         
         navigationController?.pushViewController(vc, animated: true)
         

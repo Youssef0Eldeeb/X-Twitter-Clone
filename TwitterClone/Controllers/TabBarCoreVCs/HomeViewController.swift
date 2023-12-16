@@ -86,13 +86,13 @@ class HomeViewController: UIViewController {
     }
     
     @objc func profileTap(){
-        guard let id = Auth.auth().currentUser?.uid else{return}
-        let vc = ProfileViewController(id: id, headerView: ProfileTableViewHeader(frame: CGRect(x: 0, y: 0, width: timelineTableView.frame.width, height: 370)))
+//        guard let id = Auth.auth().currentUser?.uid else{return}
+        let vc = ProfileViewController(user: viewModel.user!)
         vc.headerView.editButton.addTarget(self, action: #selector(editDidTap), for: .touchUpInside)
         navigationController?.pushViewController(vc, animated: true)
     }
     @objc func editDidTap() {
-        let vc = UINavigationController(rootViewController: EditProfileViewController())
+        let vc = UINavigationController(rootViewController: EditProfileViewController(user: viewModel.user ?? TwitterUser(from: Auth.auth().currentUser!)))
         self.present(vc, animated: true)
     }
     @objc func settingTap(){
@@ -150,7 +150,7 @@ class HomeViewController: UIViewController {
         }.store(in: &subscriptions)
     }
     private func completeUserOnboarding(){
-        let vc = UINavigationController(rootViewController: EditProfileViewController())
+        let vc = UINavigationController(rootViewController: EditProfileViewController(user:  TwitterUser(from: Auth.auth().currentUser!)))
         self.present(vc, animated: true)
     }
     private func configureConstraints(){

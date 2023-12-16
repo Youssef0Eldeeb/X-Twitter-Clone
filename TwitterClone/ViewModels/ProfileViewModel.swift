@@ -44,7 +44,8 @@ final class ProfileViewModel: ObservableObject{
             }.store(in: &subscriptions)
 
     }
-    func getFormattedDate(with date: Date) -> String{
+    func getFormattedDate() -> String{
+        let date: Date = user?.createdDate ?? Date()
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US")
         dateFormatter.dateFormat = "MMMM YYYY"

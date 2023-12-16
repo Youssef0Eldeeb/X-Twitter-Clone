@@ -21,6 +21,16 @@ class EditProfileViewController: UIViewController {
     var imageTap: EditProfileImagesTap?
     var viewModel = EditProfileViewModel()
     var subscription: Set<AnyCancellable> = []
+    var user: TwitterUser
+    
+    init(user: TwitterUser){
+        self.user = user
+        super.init(nibName: nil, bundle: nil)
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - UI Components
     private let tableView: UITableView = {
         let tableView = UITableView()
@@ -53,8 +63,6 @@ class EditProfileViewController: UIViewController {
         
         self.isModalInPresentation = true
         
-        viewModel.retreiveUser()
-        
         view.backgroundColor = .systemBackground
         view.addSubview(tableView)
         
@@ -66,11 +74,16 @@ class EditProfileViewController: UIViewController {
         
         headerView = EditProfileHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 210))
         tableView.tableHeaderView = headerView
-//        tableView.contentInsetAdjustmentBehavior = .never
         headerView.delegate = self
         
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapToDismiss)))
+        
+        viewModel.user = self.user
         bindView()
+        
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        configureUserData()
     }
     
     @objc private func cancelBtnTap(){
@@ -147,6 +160,17 @@ class EditProfileViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(tableViewConstraints)  
     }
+    private func configureUserData(){
+        self.setUserDataAsDefualtData(row: 0, updatedData: user.displayName)
+        self.setUserDataAsDefualtData(row: 1, updatedData: user.userName)
+        self.setUserDataAsDefualtData(row: 2, updatedData: user.bio)
+        self.headerView.avatarProfileImageView.sd_setImage(with: URL(string: user.avatarPath))
+        self.viewModel.avatarImageData = self.headerView.avatarProfileImageView.image
+        self.viewModel.name = user.displayName
+        self.viewModel.username = user.userName
+        self.viewModel.bio = user.bio
+        self.viewModel.validateUserProfile()
+    }
     private func bindView(){
         viewModel.$isFormValid.sink { [weak self] buttonState in
             if buttonState {
@@ -161,20 +185,6 @@ class EditProfileViewController: UIViewController {
                 self?.dismiss(animated: true)
             }
         }.store(in: &subscription)
-        
-        viewModel.$user.sink { [weak self] user in
-            self?.setUserDataAsDefualtData(row: 0, updatedData: user?.displayName ?? "")
-            self?.setUserDataAsDefualtData(row: 1, updatedData: user?.userName ?? "")
-            self?.setUserDataAsDefualtData(row: 2, updatedData: user?.bio ?? "")
-            self?.headerView.avatarProfileImageView.sd_setImage(with: URL(string: user?.avatarPath ?? ""))
-            self?.viewModel.avatarImageData = self?.headerView.avatarProfileImageView.image
-            self?.viewModel.name = user?.displayName ?? ""
-            self?.viewModel.username = user?.userName ?? ""
-            self?.viewModel.bio = user?.bio ?? ""
-            self?.viewModel.validateUserProfile()
-        }.store(in: &subscription)
-        
-        
     }
     private func setUserDataAsDefualtData(row: Int, updatedData: String){
         let indexPath = IndexPath(row: row, section: 0)

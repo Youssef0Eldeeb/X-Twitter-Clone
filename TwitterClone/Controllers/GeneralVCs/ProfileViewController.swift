@@ -13,18 +13,17 @@ import FirebaseAuth
 class ProfileViewController: UIViewController {
 
     private var isStatusBarHidden: Bool = true
-    var headerView: ProfileTableViewHeader
+    
     var viewModel = ProfileViewModel()
     private var subscriptions: Set<AnyCancellable> = []
-    var id: String
     
-    init(id: String, headerView: ProfileTableViewHeader){
-        self.id = id
-        self.headerView = headerView
-        
+    var user: TwitterUser
+    var headerView = ProfileTableViewHeader()
+    
+    init(user: TwitterUser){
+        self.user = user
         super.init(nibName: nil, bundle: nil)
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -71,13 +70,15 @@ class ProfileViewController: UIViewController {
         
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         profileTableVeiw.refreshControl = refreshControl
-                
+        
+        headerView.frame = CGRect(x: 0, y: 0, width: profileTableVeiw.frame.width, height: 370)
         profileTableVeiw.tableHeaderView = headerView
         profileTableVeiw.contentInsetAdjustmentBehavior = .never
         navigationController?.navigationBar.isHidden = true
         backButton.addTarget(self, action: #selector(backBtnTap), for: .touchUpInside)
         configureConstraint()
-        bindView()
+        
+        
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -86,10 +87,12 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         refreshControl.beginRefreshing()
-        viewModel.retreiveUser(id: id)
+        bindView()
+        viewModel.user = self.user
+        viewModel.fetchTweets()
     }
     @objc func refreshData() {
-        viewModel.retreiveUser(id: id)
+        viewModel.retreiveUser(id: user.id)
         bindView()
         profileTableVeiw.reloadData()
         refreshControl.endRefreshing()
@@ -113,6 +116,17 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate(statusBarConstraints)
         NSLayoutConstraint.activate(backButtonConstraints)
     }
+//    private func configureUserData(){
+//        self.viewModel.user = self.user
+//        self.headerView.nameLabel.text = user.displayName
+//        self.headerView.usernameLabel.text = "@\(user.userName)"
+//        self.headerView.bioLabel.text = user.bio
+//        self.headerView.followersNumberLabel.text = "\(user.followersCount)"
+//        self.headerView.followingNumberLabel.text = "\(user.followingCount)"
+//        self.headerView.joinDateLabel.text = "Joined \(self.viewModel.getFormattedDate())"
+//        self.headerView.avatarProfileImageView.sd_setImage(with: URL(string: user.avatarPath), placeholderImage: UIImage(systemName: "person.circle.fill"))
+//        self.refreshControl.endRefreshing()
+//    }
     private func bindView(){
         viewModel.$user.sink { [weak self] user in
             guard let user = user else {return}
@@ -121,7 +135,7 @@ class ProfileViewController: UIViewController {
             self?.headerView.bioLabel.text = user.bio
             self?.headerView.followersNumberLabel.text = "\(user.followersCount)"
             self?.headerView.followingNumberLabel.text = "\(user.followingCount)"
-            self?.headerView.joinDateLabel.text = "Joined \(self?.viewModel.getFormattedDate(with: user.createdDate) ?? "")"
+            self?.headerView.joinDateLabel.text = "Joined \(self?.viewModel.getFormattedDate() ?? "")"
             self?.headerView.avatarProfileImageView.sd_setImage(with: URL(string: user.avatarPath), placeholderImage: UIImage(systemName: "person.circle.fill"))
             self?.refreshControl.endRefreshing()
         }.store(in: &subscriptions)
@@ -136,7 +150,7 @@ class ProfileViewController: UIViewController {
 
 }
 
-// MARK: - Extension + TableView
+// MARK: -  + TableView
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if viewModel.tweets.count <= 6 {
