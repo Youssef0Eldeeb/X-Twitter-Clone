@@ -72,9 +72,9 @@ class ProfileViewController: UIViewController {
         profileTableVeiw.refreshControl = refreshControl
         
         headerView.frame = CGRect(x: 0, y: 0, width: profileTableVeiw.frame.width, height: 370)
+        headerView.delegate = self
         profileTableVeiw.tableHeaderView = headerView
         profileTableVeiw.contentInsetAdjustmentBehavior = .never
-        navigationController?.navigationBar.isHidden = true
         backButton.addTarget(self, action: #selector(backBtnTap), for: .touchUpInside)
         configureConstraint()
         
@@ -87,6 +87,7 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         refreshControl.beginRefreshing()
+        navigationController?.navigationBar.isHidden = true
         bindView()
         viewModel.user = self.user
         viewModel.fetchTweets()
@@ -116,17 +117,6 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate(statusBarConstraints)
         NSLayoutConstraint.activate(backButtonConstraints)
     }
-//    private func configureUserData(){
-//        self.viewModel.user = self.user
-//        self.headerView.nameLabel.text = user.displayName
-//        self.headerView.usernameLabel.text = "@\(user.userName)"
-//        self.headerView.bioLabel.text = user.bio
-//        self.headerView.followersNumberLabel.text = "\(user.followersCount)"
-//        self.headerView.followingNumberLabel.text = "\(user.followingCount)"
-//        self.headerView.joinDateLabel.text = "Joined \(self.viewModel.getFormattedDate())"
-//        self.headerView.avatarProfileImageView.sd_setImage(with: URL(string: user.avatarPath), placeholderImage: UIImage(systemName: "person.circle.fill"))
-//        self.refreshControl.endRefreshing()
-//    }
     private func bindView(){
         viewModel.$user.sink { [weak self] user in
             guard let user = user else {return}
@@ -144,6 +134,10 @@ class ProfileViewController: UIViewController {
                 self?.profileTableVeiw.reloadData()
                 self?.refreshControl.endRefreshing()
             }
+        }.store(in: &subscriptions)
+        viewModel.$error.sink { [weak self] error in
+            guard let error = error else {return}
+            UIAlertController.showAlert(msg: error, form: self!)
         }.store(in: &subscriptions)
     }
     
@@ -186,6 +180,23 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
                 self?.statusBar.layer.opacity = 0
             }
         }
+    }
+    
+}
+
+extension ProfileViewController: ProfileFollowDelegateTap{
+    func followersTap() {
+        let vc = FollowViewController()
+        vc.followUsersId = user.followers
+        vc.title = "Follower"
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func followingsTap() {
+        let vc = FollowViewController()
+        vc.followUsersId = user.followings
+        vc.title = "Following"
+        navigationController?.pushViewController(vc, animated: true)
     }
     
 }

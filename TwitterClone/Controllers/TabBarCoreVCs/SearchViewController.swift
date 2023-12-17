@@ -83,6 +83,10 @@ class SearchViewController: UIViewController {
             self?.filteredArray = []
             self?.searchTableView.reloadData()
         }.store(in: &subscriptions)
+        viewModel.$error.sink { [weak self] error in
+            guard let error = error else {return}
+            UIAlertController.showAlert(msg: error, form: self!)
+        }.store(in: &subscriptions)
     }
 
 }

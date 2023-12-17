@@ -106,6 +106,8 @@ class EditProfileViewModel: ObservableObject{
                 "displayName": name,
                 "followersCount": user.followersCount,
                 "followingCount": user.followingCount,
+                "followings": user.followings,
+                "followers": user.followers,
                 "id": user.id,
                 "isUserOnboarded": user.isUserOnboarded,
                 "userName" : username

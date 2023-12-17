@@ -86,7 +86,6 @@ class HomeViewController: UIViewController {
     }
     
     @objc func profileTap(){
-//        guard let id = Auth.auth().currentUser?.uid else{return}
         let vc = ProfileViewController(user: viewModel.user!)
         vc.headerView.editButton.addTarget(self, action: #selector(editDidTap), for: .touchUpInside)
         navigationController?.pushViewController(vc, animated: true)
@@ -122,9 +121,7 @@ class HomeViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .plain, target: self, action: #selector(profileTap))
     }
     private func handleAuthentication(){
-//        print("Not founded \(Auth.auth().currentUser?.uid)")
         if Auth.auth().currentUser == nil {
-//            print("founded \(Auth.auth().currentUser?.uid)")
             let vc = UINavigationController(rootViewController: OnboardingViewController())
             vc.modalPresentationStyle = .fullScreen
             present(vc, animated: false)

@@ -185,6 +185,9 @@ class EditProfileViewController: UIViewController {
                 self?.dismiss(animated: true)
             }
         }.store(in: &subscription)
+        viewModel.$error.sink { [weak self] error in
+            UIAlertController.showAlert(msg: error, form: self!)
+        }.store(in: &subscription)
     }
     private func setUserDataAsDefualtData(row: Int, updatedData: String){
         let indexPath = IndexPath(row: row, section: 0)
