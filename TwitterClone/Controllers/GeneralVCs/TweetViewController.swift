@@ -73,6 +73,9 @@ class TweetViewController: UIViewController {
                 self?.dismiss(animated: true)
             }
         }.store(in: &subscriptions)
+        viewModel.$error.sink { [weak self] error in
+            UIAlertController.showAlert(msg: error, form: self!)
+        }.store(in: &subscriptions)
     }
     
     @objc private func cancelBtnTap(){

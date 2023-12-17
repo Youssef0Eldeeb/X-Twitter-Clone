@@ -7,6 +7,12 @@
 
 import UIKit
 
+protocol ProfileFollowDelegateTap{
+    func followersTap()
+    func followingsTap()
+}
+
+
 class ProfileTableViewHeader: UIView {
     
     private enum SectionTabs: String{
@@ -49,6 +55,7 @@ class ProfileTableViewHeader: UIView {
     private var leadingAnchors: [NSLayoutConstraint] = []
     private var trailingAnchors: [NSLayoutConstraint] = []
     
+    var delegate: ProfileFollowDelegateTap!
     // MARK: - UI Components
 
     var coverProfileImageView: UIImageView = {
@@ -137,21 +144,21 @@ class ProfileTableViewHeader: UIView {
         label.font = .systemFont(ofSize: 12, weight: .bold)
         return label
     }()
-    private let followingLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Following"
-        label.textColor = .secondaryLabel
-        label.font = .systemFont(ofSize: 12, weight: .regular)
-        return label
+    private let followingLabel: UIButton = {
+        let button = UIButton()
+        button.setTitle("Following", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 12, weight: .regular)
+        button.setTitleColor(.secondaryLabel, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
-    private let followersLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Followers"
-        label.textColor = .secondaryLabel
-        label.font = .systemFont(ofSize: 12, weight: .regular)
-        return label
+    private let followersLabel: UIButton = {
+        let button = UIButton()
+        button.setTitle("Follower", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 12, weight: .regular)
+        button.setTitleColor(.secondaryLabel, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     private var tabsButtons: [UIButton] = ["Posts", "Replies", "Highlights", "Media", "Likes"]
         .map { buttonTitle in
@@ -202,6 +209,10 @@ class ProfileTableViewHeader: UIView {
         
         configureConstraints()
         configureStackButtonsPressed()
+        
+        self.followersLabel.addTarget(self, action: #selector(followersTap), for: .touchUpInside)
+        self.followingLabel.addTarget(self, action: #selector(followingsTap), for: .touchUpInside)
+        
     }
     required init?(coder: NSCoder) {
         fatalError()
@@ -236,6 +247,12 @@ class ProfileTableViewHeader: UIView {
         default:
             selectedTab = 0
         }
+    }
+    @objc func followersTap(){
+        delegate.followersTap()
+    }
+    @objc func followingsTap(){
+        delegate.followingsTap()
     }
     
     // MARK: - Constraints
