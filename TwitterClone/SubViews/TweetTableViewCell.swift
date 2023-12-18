@@ -169,7 +169,7 @@ class TweetTableViewCell: UITableViewCell {
         ]
         let nameLabelConstraints = [
             nameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 20),
-            nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20)
+            nameLabel.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor)
         ]
         let userNameLabelConstraints = [
             userNameLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 10),

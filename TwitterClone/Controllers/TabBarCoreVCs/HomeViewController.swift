@@ -188,7 +188,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
         }
         return cell
     }
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = DetailsTweetViewController(tweet: viewModel.tweets[indexPath.row])
+        navigationController?.pushViewController(vc, animated: true)
+    }
   
 }
 
