@@ -45,7 +45,7 @@ class DetailsTweetViewHeader: UIView {
         label.numberOfLines = 0
         return label
     }()
-    private let replyButton: UIButton = {
+    var replyButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "bubble.left"), for: .normal)

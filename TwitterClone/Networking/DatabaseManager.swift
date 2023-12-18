@@ -106,9 +106,17 @@ class DatabaseManager{
             .eraseToAnyPublisher()
     }
     
+    func setCollectionComment(add comment: Comment) -> AnyPublisher<Bool, Error>{
+        return Firestore.firestore().collection(FCollectionPath.Comment.rawValue).document(comment.id).setData(from: comment)
+            .map { _ in
+                return true
+            }
+            .eraseToAnyPublisher()
+    }
 }
 
 enum FCollectionPath: String{
     case User
     case Tweet
+    case Comment
 }

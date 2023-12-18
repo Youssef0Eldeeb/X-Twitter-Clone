@@ -11,7 +11,17 @@ import Combine
 class TweetViewController: UIViewController {
 
     private var subscriptions: Set<AnyCancellable> = []
-    var viewModel = TweetViewModel()
+    var viewModel: TweetViewModel
+    var user: TwitterUser
+    
+    init(user: TwitterUser, viewModel: TweetViewModel){
+        self.user = user
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - UI Components
     private lazy var leftBarButton: UIBarButtonItem = {
@@ -57,11 +67,8 @@ class TweetViewController: UIViewController {
         configureConstraints()
         tweetTextView.delegate = self
         
+        viewModel.user = user
         bindViews()
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewModel.getUserData()
     }
     private func bindViews(){
         viewModel.$isValidToTweet.sink { [weak self] state in

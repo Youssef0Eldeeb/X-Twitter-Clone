@@ -13,12 +13,14 @@ class DetailsTweetViewController: UIViewController {
     private let tableView = UITableView()
     var headerView = DetailsTweetViewHeader()
     var tweet: Tweet
+    var myData: TwitterUser
     
     private var subscriptions: Set<AnyCancellable> = []
     
     
-    init(tweet: Tweet){
+    init(tweet: Tweet, myData: TwitterUser){
         self.tweet = tweet
+        self.myData = myData
         super.init(nibName: nil, bundle: nil)
     }
     required init?(coder: NSCoder) {
@@ -36,6 +38,7 @@ class DetailsTweetViewController: UIViewController {
         tableView.dataSource = self
         tableView.tableHeaderView = headerView
         headerView.likesLabel.addTarget(self, action: #selector(showLikers), for: .touchUpInside)
+        headerView.replyButton.addTarget(self, action: #selector(replyTap), for: .touchUpInside)
         
     }
     override func viewDidLayoutSubviews() {
@@ -48,6 +51,13 @@ class DetailsTweetViewController: UIViewController {
         vc.title = "Liked by"
         vc.followUsersId = tweet.likers
         navigationController?.pushViewController(vc, animated: true)
+    }
+    @objc private func replyTap(){
+        let detailsTweetViewModel = DetailsTweetViewModel()
+        detailsTweetViewModel.tweetID = tweet.id
+        let vc = UINavigationController(rootViewController: TweetViewController(user: myData, viewModel: detailsTweetViewModel))
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true)
     }
 
 }

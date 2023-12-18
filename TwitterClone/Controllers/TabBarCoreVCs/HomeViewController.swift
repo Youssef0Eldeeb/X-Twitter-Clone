@@ -23,11 +23,8 @@ class HomeViewController: UIViewController {
         return tableView
     }()
     private lazy var tweetButton: UIButton = {
-        let button = UIButton(type: .system, primaryAction: UIAction{ [weak self] _ in
-            let vc = UINavigationController(rootViewController: TweetViewController())
-            vc.modalPresentationStyle = .fullScreen
-            self?.present(vc, animated: true)
-        })
+        let button = UIButton(type: .system)
+        button.addTarget(self, action: #selector(addTweetTap), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         let plusSign = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 18, weight: .medium))
         button.setImage(plusSign, for: .normal)
@@ -101,8 +98,11 @@ class HomeViewController: UIViewController {
     @objc func refreshData() {
         viewModel.retreiveUser()
         bindViews()
-//        timelineTableView.reloadData()
-//        refreshControl.endRefreshing()
+    }
+    @objc func addTweetTap(){
+        let vc = UINavigationController(rootViewController: TweetViewController(user: viewModel.user!, viewModel: TweetViewModel()))
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true)
     }
     
     private func configureNavigationBar(){
@@ -189,7 +189,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = DetailsTweetViewController(tweet: viewModel.tweets[indexPath.row])
+        let vc = DetailsTweetViewController(tweet: viewModel.tweets[indexPath.row], myData: viewModel.user!)
         navigationController?.pushViewController(vc, animated: true)
     }
   

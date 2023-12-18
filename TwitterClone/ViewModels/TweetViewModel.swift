@@ -9,28 +9,15 @@ import Foundation
 import Combine
 import FirebaseAuth
 
-final class TweetViewModel: ObservableObject {
+class TweetViewModel: ObservableObject {
      
-    private var subscriptions: Set<AnyCancellable> = []
+    var subscriptions: Set<AnyCancellable> = []
     
     @Published var isValidToTweet: Bool = false
     @Published var error: String = ""
     @Published var isTweeted: Bool = false
     var tweetContent: String = ""
-    private var user: TwitterUser?
-    
-    func getUserData(){
-        guard let userId = Auth.auth().currentUser?.uid else {return}
-        DatabaseManager.shared.getCollectionUser(retrevie: userId)
-            .sink { [weak self] completion in
-                if case .failure(let error) = completion{
-                    self?.error = error.localizedDescription
-                }
-            } receiveValue: { [weak self] twitterUser in
-                self?.user = twitterUser
-            }.store(in: &subscriptions)
-
-    }
+    var user: TwitterUser?
     
     func validateToTweet(){
         isValidToTweet = !tweetContent.isEmpty
