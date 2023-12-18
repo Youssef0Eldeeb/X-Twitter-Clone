@@ -113,6 +113,16 @@ class DatabaseManager{
             }
             .eraseToAnyPublisher()
     }
+    func getCollectionComments(tweetId id: String) -> AnyPublisher<[Comment], Error>{
+        return Firestore.firestore().collection(FCollectionPath.Comment.rawValue).whereField("tweetId", isEqualTo: id).getDocuments()
+            .tryMap(\.documents)
+            .tryMap { snapshots in
+                try snapshots.map{
+                    try $0.data(as: Comment.self)
+                }
+            }
+            .eraseToAnyPublisher()
+    }
 }
 
 enum FCollectionPath: String{

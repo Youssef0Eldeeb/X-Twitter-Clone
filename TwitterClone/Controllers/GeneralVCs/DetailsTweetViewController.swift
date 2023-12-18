@@ -14,6 +14,7 @@ class DetailsTweetViewController: UIViewController {
     var headerView = DetailsTweetViewHeader()
     var tweet: Tweet
     var myData: TwitterUser
+    var viewModel = DetailsTweetViewModel()
     
     private var subscriptions: Set<AnyCancellable> = []
     
@@ -45,6 +46,10 @@ class DetailsTweetViewController: UIViewController {
         super.viewDidLayoutSubviews()
         tableView.frame = view.frame
     }
+    override func viewWillAppear(_ animated: Bool) {
+        viewModel.retriveComments(tweetId: tweet.id)
+        bindView()
+    }
     
     @objc private func showLikers(){
         let vc = FollowViewController()
@@ -53,11 +58,17 @@ class DetailsTweetViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     @objc private func replyTap(){
-        let detailsTweetViewModel = DetailsTweetViewModel()
-        detailsTweetViewModel.tweetID = tweet.id
-        let vc = UINavigationController(rootViewController: TweetViewController(user: myData, viewModel: detailsTweetViewModel))
+        viewModel.tweetID = tweet.id
+        let vc = UINavigationController(rootViewController: TweetViewController(user: myData, viewModel: viewModel))
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true)
+    }
+    private func bindView(){
+        viewModel.$comments.sink { _ in
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }.store(in: &subscriptions)
     }
 
 }
@@ -65,12 +76,16 @@ class DetailsTweetViewController: UIViewController {
 // MARK: - + tableView
 extension DetailsTweetViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return viewModel.comments.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TweetTableViewCell.identifier  , for: indexPath) as? TweetTableViewCell else {return UITableViewCell()}
-        
+        let commentModel = viewModel.comments[indexPath.row]
+        cell.configureTweet(displayName: commentModel.author.displayName,
+                            userName: commentModel.author.userName,
+                            tweetContent: commentModel.commentContent,
+                            avatarPath: commentModel.author.avatarPath)
         return cell
     }
       
