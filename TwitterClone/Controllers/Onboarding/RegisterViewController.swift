@@ -39,14 +39,6 @@ class RegisterViewController: UIViewController {
         textField.isSecureTextEntry = true
         return textField
     }()
-    private let birthdayTextField: UITextField = {
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.attributedPlaceholder = NSAttributedString(
-            string: "Date of birth",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
-        return textField
-    }()
     private let guideLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -77,7 +69,6 @@ class RegisterViewController: UIViewController {
         view.addSubview(registerTitleLabel)
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
-        view.addSubview(birthdayTextField)
         view.addSubview(registerButton)
         view.addSubview(guideLabel)
         
@@ -162,12 +153,6 @@ class RegisterViewController: UIViewController {
             passwordTextField.widthAnchor.constraint(equalToConstant: view.frame.width - 40),
             passwordTextField.heightAnchor.constraint(equalToConstant: 60)
         ]
-        let birthdayTextFieldConstraints = [
-            birthdayTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            birthdayTextField.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 15),
-            birthdayTextField.widthAnchor.constraint(equalToConstant: view.frame.width - 40),
-            birthdayTextField.heightAnchor.constraint(equalToConstant: 60)
-        ]
         let guideLabelConstraints = [
             guideLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             guideLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
@@ -183,7 +168,6 @@ class RegisterViewController: UIViewController {
         NSLayoutConstraint.activate(registerLabelConstraints)
         NSLayoutConstraint.activate(emailTextFieldConstraints)
         NSLayoutConstraint.activate(passwordTextFieldConstraints)
-        NSLayoutConstraint.activate(birthdayTextFieldConstraints)
         NSLayoutConstraint.activate(guideLabelConstraints)
         NSLayoutConstraint.activate(registerButtonConstraints)
         

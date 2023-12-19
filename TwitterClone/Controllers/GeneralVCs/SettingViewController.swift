@@ -35,8 +35,14 @@ class SettingViewController: UIViewController {
     }
     
     @objc private func logoutTap(){
-        try? Auth.auth().signOut()
-        handleAuthentication()
+        let alert = UIAlertController(title: "Alert", message: "Are you sure to logout?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
+            try? Auth.auth().signOut()
+            self?.handleAuthentication()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        self.present(alert, animated: true)
+        
     }
     
     private func handleAuthentication(){
