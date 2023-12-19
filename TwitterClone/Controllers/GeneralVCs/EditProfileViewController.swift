@@ -186,6 +186,7 @@ class EditProfileViewController: UIViewController {
             }
         }.store(in: &subscription)
         viewModel.$error.sink { [weak self] error in
+            guard let error = error else {return}
             UIAlertController.showAlert(msg: error, form: self!)
         }.store(in: &subscription)
     }

@@ -51,7 +51,6 @@ final class SearchViewModel: ObservableObject{
         DatabaseManager.shared.updateCollectionUser(updateFields: updatedSelectedUserFields, id: selectedUser.id)
             .sink(receiveCompletion: { [weak self] completion in
                 if case .failure(let error) = completion {
-                    print("error:\n" + error.localizedDescription)
                     self?.error = error.localizedDescription
                 }
             }, receiveValue: { _ in
@@ -59,7 +58,6 @@ final class SearchViewModel: ObservableObject{
         DatabaseManager.shared.updateCollectionUser(updateFields: updatedMyDataFields, id: myData.id)
             .sink(receiveCompletion: { [weak self] completion in
                 if case .failure(let error) = completion {
-                    print("error:\n" + error.localizedDescription)
                     self?.error = error.localizedDescription
                 }
             }, receiveValue: { _ in

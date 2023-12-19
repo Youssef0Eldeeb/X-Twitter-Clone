@@ -60,7 +60,6 @@ class HomeViewModel: ObservableObject{
         DatabaseManager.shared.updateCollectionTweet(updateFields: updatedFields, id: tweetId)
             .sink(receiveCompletion: { [weak self] completion in
                 if case .failure(let error) = completion {
-                    print("error:\n" + error.localizedDescription)
                     self?.error = error.localizedDescription
                 }
             }, receiveValue: { [weak self] _ in

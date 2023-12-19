@@ -27,7 +27,11 @@ class SearchViewController: UIViewController {
         
         return searchBar
     }()
-    private let searchTableView = UITableView()
+    private let searchTableView: UITableView = {
+           let tableView = UITableView()
+            tableView.register(FollowTableViewCell.self, forCellReuseIdentifier: FollowTableViewCell.identifire)
+            return tableView
+        }()
     
     // MARK: - Methods
     override func viewDidLoad() {
@@ -51,7 +55,7 @@ class SearchViewController: UIViewController {
         myId = Auth.auth().currentUser?.uid
         viewModel.retreiveAllUser()
     }
-    @objc func editDidTap() {
+    @objc private func editDidTap() {
         let vc = UINavigationController(rootViewController: EditProfileViewController(user: selectedUser ?? TwitterUser(from: Auth.auth().currentUser!)))
         self.present(vc, animated: true)
     }
@@ -106,8 +110,9 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISe
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.textLabel?.text = filteredArray[indexPath.row].displayName
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FollowTableViewCell.identifire, for: indexPath) as? FollowTableViewCell else { return UITableViewCell() }
+        let userModel = filteredArray[indexPath.row]
+        cell.configureTweet(displayName: userModel.displayName, userName: userModel.userName, avatarPath: userModel.avatarPath)
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -138,6 +143,9 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISe
         
         navigationController?.pushViewController(vc, animated: true)
         
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 65
     }
     
     

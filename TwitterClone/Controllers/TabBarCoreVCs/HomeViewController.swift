@@ -83,11 +83,11 @@ class HomeViewController: UIViewController {
     }
     
     @objc func profileTap(){
-        let vc = ProfileViewController(user: viewModel.user!)
+        let vc = ProfileViewController(user: viewModel.user ?? TwitterUser(from: Auth.auth().currentUser!))
         vc.headerView.editButton.addTarget(self, action: #selector(editDidTap), for: .touchUpInside)
         navigationController?.pushViewController(vc, animated: true)
     }
-    @objc func editDidTap() {
+    @objc private func editDidTap() {
         let vc = UINavigationController(rootViewController: EditProfileViewController(user: viewModel.user ?? TwitterUser(from: Auth.auth().currentUser!)))
         self.present(vc, animated: true)
     }

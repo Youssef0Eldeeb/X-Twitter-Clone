@@ -14,14 +14,14 @@ class EditProfileHeaderView: UIView {
     // MARK: - UI Components
     var coverProfileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(systemName: "camera", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14))
         imageView.backgroundColor = .darkGray
         imageView.tintColor = .white
         imageView.clipsToBounds = true
         //p: placeholder of coverImageView
         imageView.contentMode = .scaleAspectFill
-        imageView.image = UIImage(systemName: "camera", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 14)))
+        
         imageView.isUserInteractionEnabled = true
         return imageView
     }()

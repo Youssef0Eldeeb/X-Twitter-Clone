@@ -24,7 +24,7 @@ class EditProfileViewModel: ObservableObject{
     @Published var avatarImageData: UIImage?
     @Published var coverImageData: UIImage?
     @Published var isFormValid: Bool = false
-    @Published var error: String = ""
+    @Published var error: String?
     @Published var isOnboarding: Bool = false
     
     var user: TwitterUser?
@@ -84,7 +84,6 @@ class EditProfileViewModel: ObservableObject{
         DatabaseManager.shared.updateCollectionUser(updateFields: updatedFields, id: id)
             .sink(receiveCompletion: { [weak self] completion in
                 if case .failure(let error) = completion {
-                    print("error:\n" + error.localizedDescription)
                     self?.error = error.localizedDescription
                 }
             }, receiveValue: { [weak self] updated in
@@ -116,7 +115,6 @@ class EditProfileViewModel: ObservableObject{
         DatabaseManager.shared.updateCollectionSpecificTweets(updateFields: updatedFields, id: user.id)
             .sink(receiveCompletion: { [weak self] completion in
                 if case .failure(let error) = completion {
-                    print("error:\n" + error.localizedDescription)
                     self?.error = error.localizedDescription
                 }
             }, receiveValue: {_ in}).store(in: &subscriptions)

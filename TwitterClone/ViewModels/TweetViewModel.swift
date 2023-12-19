@@ -14,7 +14,7 @@ class TweetViewModel: ObservableObject {
     var subscriptions: Set<AnyCancellable> = []
     
     @Published var isValidToTweet: Bool = false
-    @Published var error: String = ""
+    @Published var error: String?
     @Published var isTweeted: Bool = false
     var tweetContent: String = ""
     var user: TwitterUser?

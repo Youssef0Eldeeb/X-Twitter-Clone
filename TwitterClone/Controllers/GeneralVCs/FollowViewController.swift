@@ -10,7 +10,11 @@ import Combine
 
 class FollowViewController: UIViewController {
 
-    private let followTableView = UITableView()
+    private let followTableView: UITableView = {
+       let tableView = UITableView()
+        tableView.register(FollowTableViewCell.self, forCellReuseIdentifier: FollowTableViewCell.identifire)
+        return tableView
+    }()
     var followUsersId: [String] = []
     var usersArray: [TwitterUser] = []
     var viewModel = FollowViewModel()
@@ -54,9 +58,14 @@ extension FollowViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.textLabel?.text = usersArray[indexPath.row].displayName
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FollowTableViewCell.identifire, for: indexPath) as? FollowTableViewCell else {return UITableViewCell()}
+        let userModel = usersArray[indexPath.row]
+        cell.configureTweet(displayName: userModel.displayName, userName: userModel.userName, avatarPath: userModel.avatarPath)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 65
     }
       
 }
