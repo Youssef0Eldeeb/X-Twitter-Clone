@@ -60,6 +60,7 @@ class EditProfileViewModel: ObservableObject{
                 case .finished:
                     self?.updateUserData()
                     self?.updateTweetData()
+                    self?.updateCommentUserData()
                 case .failure(let error):
                     self?.error = error.localizedDescription
                 }
@@ -113,6 +114,35 @@ class EditProfileViewModel: ObservableObject{
             ] as [String : Any]
         ]
         DatabaseManager.shared.updateCollectionSpecificTweets(updateFields: updatedFields, id: user.id)
+            .sink(receiveCompletion: { [weak self] completion in
+                if case .failure(let error) = completion {
+                    self?.error = error.localizedDescription
+                }
+            }, receiveValue: {_ in}).store(in: &subscriptions)
+
+    }
+    private func updateCommentUserData(){
+        guard let name = name,
+              let username = username,
+              let avatarPath = avatarPath,
+              let user = user
+        else { return }
+        let updatedFields: [String: Any] = [
+            "author": [
+                "avatarPath": avatarPath,
+                "bio": bio ?? "",
+                "createdDate": user.createdDate,
+                "displayName": name,
+                "followersCount": user.followersCount,
+                "followingCount": user.followingCount,
+                "followings": user.followings,
+                "followers": user.followers,
+                "id": user.id,
+                "isUserOnboarded": user.isUserOnboarded,
+                "userName" : username
+            ] as [String : Any]
+        ]
+        DatabaseManager.shared.updateCollectionComments(updateFields: updatedFields, id: user.id)
             .sink(receiveCompletion: { [weak self] completion in
                 if case .failure(let error) = completion {
                     self?.error = error.localizedDescription
