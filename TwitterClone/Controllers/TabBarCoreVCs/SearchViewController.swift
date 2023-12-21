@@ -121,21 +121,23 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISe
         guard let myId = self.myId else { return }
         guard let selectedUser = selectedUser else {return}
         if (selectedUser.id == myId) {
+            print("edit bottonnn")
             header.editButton.setTitle("Edit profile", for: .normal)
             header.editButton.backgroundColor = .systemBackground
             header.editButton.tintColor = .label
             header.editButton.addTarget(self, action: #selector(editDidTap), for: .touchUpInside)
         }else{
+            header.editButton.addTarget(self, action: #selector(followUser), for: .touchUpInside)
             if selectedUser.followers.contains(myId) {
                 header.editButton.setTitle("Following", for: .normal)
                 header.editButton.backgroundColor = .systemBackground
                 header.editButton.tintColor = .label
             }else{
+                
                 header.editButton.setTitle("Follow", for: .normal)
                 header.editButton.backgroundColor = .label
                 header.editButton.tintColor = .systemBackground
             }
-            header.editButton.addTarget(self, action: #selector(followUser), for: .touchUpInside)
         }
         
         let vc = ProfileViewController(user: selectedUser)

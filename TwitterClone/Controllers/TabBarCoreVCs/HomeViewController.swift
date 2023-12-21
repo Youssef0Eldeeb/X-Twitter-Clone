@@ -50,6 +50,11 @@ class HomeViewController: UIViewController {
         return customBarButtonItem
     }
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
     
     private let refreshControl = UIRefreshControl()
     
@@ -58,6 +63,8 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(timelineTableView)
         view.addSubview(tweetButton)
+        view.addSubview(activityIndicator)
+        activityIndicator.center = CGPoint(x: view.center.x, y: view.center.y)
         
         timelineTableView.delegate = self
         timelineTableView.dataSource = self
@@ -72,7 +79,7 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
-        refreshControl.beginRefreshing()
+        activityIndicator.startAnimating()
         handleAuthentication()
         viewModel.retreiveUser()
         bindViews()
@@ -82,7 +89,7 @@ class HomeViewController: UIViewController {
         timelineTableView.frame = view.frame
     }
     
-    @objc func profileTap(){
+    @objc private func profileTap(){
         let vc = ProfileViewController(user: viewModel.user ?? TwitterUser(from: Auth.auth().currentUser!))
         vc.headerView.editButton.addTarget(self, action: #selector(editDidTap), for: .touchUpInside)
         navigationController?.pushViewController(vc, animated: true)
@@ -145,6 +152,11 @@ class HomeViewController: UIViewController {
             guard let error = error else {return}
             UIAlertController.showAlert(msg: error, form: self!)
         }.store(in: &subscriptions)
+        viewModel.updateLoadingStatus = { [weak self] () in
+            DispatchQueue.main.async {
+                self?.activityIndicator.stopAnimating()
+            }
+        }
     }
     private func completeUserOnboarding(){
         let vc = UINavigationController(rootViewController: EditProfileViewController(user:  TwitterUser(from: Auth.auth().currentUser!)))

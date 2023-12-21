@@ -19,6 +19,13 @@ class HomeViewModel: ObservableObject{
     @Published var likers: [String]?
     var likesTweetIds: [String] = []
     
+    var isLoading: Bool = true{
+        didSet{
+            self.updateLoadingStatus?()
+        }
+    }
+    var updateLoadingStatus: (()->())?
+    
     private var subscriptions: Set<AnyCancellable> = []
     
     func retreiveUser(){
@@ -45,6 +52,7 @@ class HomeViewModel: ObservableObject{
             } receiveValue: { [weak self] receivedTweets in
                 self?.tweets = receivedTweets
                 self?.likesTweetIds = self?.getAllTweetsLikes(tweets: receivedTweets) ?? []
+                self?.isLoading = false
             }.store(in: &subscriptions)
 
     }
