@@ -17,3 +17,7 @@ It contains most of the features that are found in any social media application 
 - Combine
 - Unit testing
 
+## Video of App
+
+https://github.com/Youssef0Eldeeb/X-Twitter-Clone/assets/55714593/c949bc4f-26c3-4d5e-903c-93ef2da4e51f
+
